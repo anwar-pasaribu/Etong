@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    id("io.realm.kotlin")
 }
 
 kotlin {
@@ -28,7 +29,10 @@ kotlin {
             isStatic = true
         }
     }
-    
+
+    val coroutinesVersion = "1.7.3"
+    val ktorVersion = "2.3.6"
+
     sourceSets {
         val desktopMain by getting
         
@@ -36,6 +40,12 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+
+            compileOnly("io.realm.kotlin:library-sync:1.12.0")
+            implementation("io.ktor:ktor-client-android:$ktorVersion")
+        }
+        iosMain.dependencies {
+            implementation("io.ktor:ktor-client-darwin:$ktorVersion")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -48,6 +58,14 @@ kotlin {
             implementation(compose.components.resources)
 
             implementation(libs.kotlinx.datetime)
+
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+            implementation("io.realm.kotlin:library-sync:1.12.0")
+            implementation("com.fleeksoft.ksoup:ksoup:0.0.6")
+            implementation("io.ktor:ktor-client-core:$ktorVersion")
+            implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+            implementation("media.kamel:kamel-image:0.9.0")
         }
     }
 }
@@ -76,6 +94,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/versions/9/previous-compilation-data.bin"
         }
     }
     buildTypes {
