@@ -1,0 +1,9 @@
+<resources>
+    <string name="realm_app_id">application-0-tbfks</string>
+    <string name="realm_app_url">https://realm.mongodb.com/groups/65702bd66911dc51921c3c1d/apps/6570300979db5a722909eb81</string>
+    <string name="realm_base_url">https://realm.mongodb.com</string>
+    <string name="realm_client_api_base_url">https://ap-southeast-1.aws.realm.mongodb.com</string>
+    <string name="realm_data_api_base_url">https://ap-southeast-1.aws.data.mongodb-api.com</string>
+    <string name="realm_data_explorer_link">https://cloud.mongodb.com/links/65702bd66911dc51921c3c1d/explorer/unwur-mongo-sg/database/collection/find</string>
+    <string name="realm_data_source_name">mongodb-atlas</string>
+</resources>

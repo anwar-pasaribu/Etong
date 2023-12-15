@@ -3,3 +3,5 @@ interface Platform {
 }
 
 expect fun getPlatform(): Platform
+
+expect val Double.formatNominal: String

@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
-    id("io.realm.kotlin")
+    alias(libs.plugins.realm)
 }
 
 kotlin {
@@ -30,9 +30,6 @@ kotlin {
         }
     }
 
-    val coroutinesVersion = "1.7.3"
-    val ktorVersion = "2.3.6"
-
     sourceSets {
         val desktopMain by getting
         
@@ -40,15 +37,18 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.kotlinx.coroutines.android)
 
-            compileOnly("io.realm.kotlin:library-sync:1.12.0")
-            implementation("io.ktor:ktor-client-android:$ktorVersion")
+            compileOnly(libs.realm.base)
+            compileOnly(libs.realm.sync)
+            implementation(libs.ktor.client.android)
         }
         iosMain.dependencies {
-            implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+            implementation(libs.ktor.client.darwin)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.kotlinx.coroutines.swing)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -59,13 +59,16 @@ kotlin {
 
             implementation(libs.kotlinx.datetime)
 
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-            implementation("io.realm.kotlin:library-sync:1.12.0")
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.realm.base)
+            implementation(libs.realm.sync)
             implementation("com.fleeksoft.ksoup:ksoup:0.0.6")
-            implementation("io.ktor:ktor-client-core:$ktorVersion")
-            implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
             implementation("media.kamel:kamel-image:0.9.0")
+
+            implementation("com.moriatsushi.insetsx:insetsx:0.1.0-alpha10")
         }
     }
 }

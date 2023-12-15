@@ -1,3 +1,4 @@
+import platform.Foundation.NSNumber
 import platform.UIKit.UIDevice
 
 class IOSPlatform: Platform {
@@ -5,3 +6,7 @@ class IOSPlatform: Platform {
 }
 
 actual fun getPlatform(): Platform = IOSPlatform()
+actual val Double.formatNominal: String
+    get() {
+        return (this).toString()
+    }
