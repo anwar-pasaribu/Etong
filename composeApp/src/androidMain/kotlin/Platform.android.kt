@@ -9,5 +9,5 @@ actual fun getPlatform(): Platform = AndroidPlatform()
 
 actual val Double.formatNominal: String
     get() {
-        return "%,.0f".format(Locale.GERMAN, this).prependIndent("Rp ")
+        return "%,.0f".format(Locale.GERMAN, this)
     }

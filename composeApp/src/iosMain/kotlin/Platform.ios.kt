@@ -1,4 +1,3 @@
-import platform.Foundation.NSNumber
 import platform.UIKit.UIDevice
 
 class IOSPlatform: Platform {
