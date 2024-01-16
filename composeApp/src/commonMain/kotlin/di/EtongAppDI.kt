@@ -17,6 +17,7 @@ import usecase.DeleteCardFromDatabaseUseCase
 import usecase.GetUserLoginStatusUseCase
 import usecase.ObserveCardListUseCase
 import usecase.ToggleOnOffSyncUseCase
+import viewmodel.CardScreenModel
 import viewmodel.CardViewModel
 
 object EtongAppDI {
@@ -86,6 +87,15 @@ object EtongAppDI {
 
     val cardViewModel by lazy {
         CardViewModel(
+            toggleOnOffSyncUseCase,
+            observeCardListUseCase,
+            addNewCardToDatabaseUseCase,
+            deleteCardFromDatabaseUseCase,
+        )
+    }
+
+    val cardScreenModel by lazy {
+        CardScreenModel(
             toggleOnOffSyncUseCase,
             observeCardListUseCase,
             addNewCardToDatabaseUseCase,

@@ -1,7 +1,7 @@
 package ui
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -11,8 +11,11 @@ fun EtongTheme(
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colors = MaterialTheme.colors.copy(
-            primary = Color.Black
+        colorScheme = MaterialTheme.colorScheme.copy(
+            primary = Color(0xff1f2020),
+            onPrimary = Color(0xff1f2020),
+            background = Color.White,
+            surface = Color.White
         ),
         shapes = MaterialTheme.shapes.copy(
             small = RoundedCornerShape(10.dp),

@@ -53,7 +53,9 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
+            implementation(compose.animation)
+            implementation(compose.materialIconsExtended)
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
 
@@ -69,6 +71,11 @@ kotlin {
             implementation("media.kamel:kamel-image:0.9.0")
 
             implementation("com.moriatsushi.insetsx:insetsx:0.1.0-alpha10")
+
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.screenModel)
+            implementation(libs.voyager.screenModel)
+            implementation(libs.voyager.transitions)
         }
     }
 }

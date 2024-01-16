@@ -10,8 +10,11 @@ import io.realm.kotlin.query.find
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.delayFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import model.storage.Card
@@ -32,6 +35,9 @@ class EtongDatasource(
         realm
             .query<Card>()
             .asFlow()
+            .onStart {
+                delay(2000L)
+            }
             .map { changes ->
                 changes.list
             }
@@ -46,11 +52,8 @@ class EtongDatasource(
     }
 
     suspend fun tryDeleteCard(card: Card): Unit = withContext(Dispatchers.IO) {
-        // Open a write transaction
         realm.writeBlocking {
-            // Query the Frog type and filter by primary key value
             val cardToDelete: Card? = query<Card>("_id == $0", card._id).first().find()
-            // Pass the query results to delete()
             cardToDelete?.let { delete(it) }
         }
 

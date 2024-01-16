@@ -12,13 +12,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -49,7 +50,8 @@ import model.CardUiModel
 @Composable
 fun InputCardDetail(onDismissRequest: () -> Unit, onSubmitRequest: (CardUiModel) -> Unit) {
     Dialog(
-        onDismissRequest = { onDismissRequest() }
+        onDismissRequest = { onDismissRequest() },
+        properties = DialogProperties(dismissOnClickOutside = true),
     ) {
         Card(shape = RoundedCornerShape(16.dp)) {
             Column(
@@ -104,7 +106,7 @@ fun InputCardDetail(onDismissRequest: () -> Unit, onSubmitRequest: (CardUiModel)
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = "Tanggal Jatuh Tempo",
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
                 )
                 var dueDateMillis by remember { mutableStateOf(0L) }
@@ -133,7 +135,7 @@ fun InputCardDetail(onDismissRequest: () -> Unit, onSubmitRequest: (CardUiModel)
                 }, enabled = buttonEnabled ) {
                     Text(
                         modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        style = MaterialTheme.typography.button,
+                        style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
                         text = "Tambah"
                     )
@@ -229,10 +231,11 @@ fun DropdownSection(
                         selectedIndex = index
                         expanded = false
                     },
-                    enabled = index != 0
-                ) {
-                    Text(text = s)
-                }
+                    enabled = index != 0,
+                    text = {
+                        Text(text = s)
+                    }
+                )
             }
         }
     }

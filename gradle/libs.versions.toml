@@ -2,7 +2,7 @@
 compose = "1.5.4"
 compose-plugin = "1.5.11"
 compose-compiler = "1.5.4"
-agp = "8.1.2"
+agp = "8.2.1"
 android-minSdk = "30"
 android-compileSdk = "34"
 android-targetSdk = "34"
@@ -17,8 +17,8 @@ kotlin = "1.9.21"
 junit = "4.13.2"
 kotlinxDatetime = "0.4.1"
 kotlinxCoroutines = "1.7.3"
-voyager = "1.0.0-rc10"
-ktor = "2.3.6"
+voyager = "1.0.0"
+ktor = "2.3.7"
 realm = "1.13.0"
 
 
@@ -51,10 +51,10 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+voyager-screenModel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 voyager-bottomSheetNavigator = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
 voyager-tabNavigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
-voyager-androidx = { module = "cafe.adriel.voyager:voyager-androidx", version.ref = "voyager" }
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voyager" }
 voyager-kodein = { module = "cafe.adriel.voyager:voyager-kodein", version.ref = "voyager" }
