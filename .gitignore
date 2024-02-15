@@ -18,3 +18,4 @@ captures
 .fleet
 composeApp/default.realm.management
 composeApp/mongodb-realm
+composeApp/release
