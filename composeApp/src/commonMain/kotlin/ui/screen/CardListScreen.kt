@@ -13,10 +13,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
@@ -26,33 +28,45 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.core.screen.ScreenKey
+import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import di.EtongAppDI
+import ui.ConfirmDialog
 import ui.CreditCardItem
 import ui.InputCardDetail
 import ui.LoadingView
+import ui.TotalBillCardItem
 import viewmodel.CardScreenModel
 
 @OptIn(ExperimentalFoundationApi::class)
 class CardListScreen : Screen {
+
+    override val key: ScreenKey = uniqueScreenKey
 
     @Composable
     override fun Content() {
@@ -60,7 +74,9 @@ class CardListScreen : Screen {
         val state = remember { cardScreenModel.state }
         val openAddCardDialog = remember { mutableStateOf(false) }
         val fabVisible = remember { mutableStateOf(false) }
+        val confirmLogoutDialogVisible = remember { mutableStateOf(false) }
         val navigator = LocalNavigator.currentOrThrow
+
         Scaffold(
             floatingActionButton = {
                 AnimatedVisibility(
@@ -70,22 +86,22 @@ class CardListScreen : Screen {
                 ) {
                     FloatingActionButton(
                         modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         onClick = { openAddCardDialog.value = true },
                         shape = CircleShape,
                         content = {
                             Icon(
                                 imageVector = Icons.Filled.Add,
                                 contentDescription = "Add new card",
-                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
                     )
                 }
             },
             floatingActionButtonPosition = FabPosition.Center,
-        ) { innerPadding ->
+        ) { _ ->
             Surface {
-                Box(modifier = Modifier.fillMaxSize()) {
+                Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
                     when (val currentState = state.value) {
                         CardScreenModel.MainScreenState.Loading -> {
                             AnimatedVisibility(true) {
@@ -102,7 +118,7 @@ class CardListScreen : Screen {
                             fabVisible.value = true
                             AnimatedVisibility(
                                 visible = true,
-                                enter = scaleIn(initialScale = .9F),
+                                enter = scaleIn(initialScale = .5F),
                                 exit = scaleOut(),
                             ) {
                                 LazyColumn(
@@ -121,22 +137,7 @@ class CardListScreen : Screen {
                                         )
                                     }
                                     stickyHeader {
-                                        Column {
-                                            Spacer(
-                                                Modifier.windowInsetsTopHeight(
-                                                    WindowInsets.statusBars
-                                                )
-                                            )
-                                            Row(
-                                                modifier = Modifier.fillMaxWidth()
-                                                    .background(Color.White)
-                                            ) {
-                                                Text(
-                                                    style = MaterialTheme.typography.displayLarge,
-                                                    text = "Total bill"
-                                                )
-                                            }
-                                        }
+                                        CardListHeader(confirmLogoutDialogVisible)
                                     }
                                     items(
                                         items = currentState.cardList,
@@ -154,23 +155,30 @@ class CardListScreen : Screen {
                                         )
                                     }
                                     item {
-                                        Spacer(
-                                            Modifier.windowInsetsBottomHeight(
-                                                WindowInsets.systemBars
-                                            )
+                                        TotalBillCardItem(
+                                            cardUiModel = currentState.totalBillCard,
                                         )
+                                    }
+                                    item {
+                                        Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
                                     }
                                 }
                             }
                         }
 
                         CardScreenModel.MainScreenState.Empty -> {
+                            fabVisible.value = true
                             AnimatedVisibility(true) {
-                                Column (modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
+                                Column (
+                                    modifier = Modifier.fillMaxSize(),
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
                                     Text(
-                                        text = "Tidak ada Kartu",
-                                        modifier = Modifier.fillMaxSize().padding(16.dp),
-                                        style = MaterialTheme.typography.bodyMedium
+                                        text = "Tidak ada Kartu, tekan tombol + untuk menambah.",
+                                        modifier = Modifier.padding(16.dp),
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        textAlign = TextAlign.Center
                                     )
                                 }
                             }
@@ -203,6 +211,58 @@ class CardListScreen : Screen {
                         cardScreenModel.addNewCard(newCard)
                     }
                 )
+            }
+
+            confirmLogoutDialogVisible.value -> {
+                ConfirmDialog(
+                    message = "Kamu mau logout dari aplikasi?",
+                    positiveActionText = "Logout",
+                    onPositiveAction = {
+                        navigator.replaceAll(UserEnteringScreen(logoutRequested = true))
+                    },
+                    onDismissRequest = {
+                        confirmLogoutDialogVisible.value = false
+                    }
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun CardListHeader(confirmLogoutDialogVisible: MutableState<Boolean>) {
+        Column {
+            Spacer(
+                Modifier.windowInsetsTopHeight(
+                    WindowInsets.statusBars
+                )
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    style = MaterialTheme.typography.displayMedium,
+                    text = "Bills"
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    IconButton(
+                        modifier = Modifier.size(32.dp, 32.dp),
+                        onClick = {
+                            confirmLogoutDialogVisible.value = true
+                        },
+                        content = {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.Logout,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onPrimary,
+                            )
+                        }
+                    )
+                }
             }
         }
     }

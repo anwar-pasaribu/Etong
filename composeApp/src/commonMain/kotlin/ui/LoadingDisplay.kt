@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun LoadingView(modifier: Modifier = Modifier, skeletonLayout: @Composable () -> Unit = {}) {
     Box(modifier = modifier.then(

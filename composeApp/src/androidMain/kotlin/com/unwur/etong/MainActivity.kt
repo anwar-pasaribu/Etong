@@ -3,6 +3,7 @@ package com.unwur.etong
 import App
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Canvas
@@ -31,12 +32,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ui.EtongTheme
+import theme.EtongTheme
 import ui.PaidAmountView
+import ui.UserEnteringScreenModeToggle
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(
+                scrim = getColor(R.color.etongPrimary),
+                darkScrim = getColor(R.color.etongPrimary)
+            )
+        )
         super.onCreate(savedInstanceState)
         setContent {
             App()
@@ -130,12 +137,26 @@ fun LoadingViewPreview() {
 
 @Composable
 fun LoadingView(modifier: Modifier = Modifier, skeletonLayout: @Composable () -> Unit = {}) {
-    Box(modifier = modifier.then(
-        Modifier
-            .width(24.dp)
-            .height(24.dp))) {
+    Box(
+        modifier = modifier.then(
+            Modifier
+                .width(24.dp)
+                .height(24.dp)
+        )
+    ) {
         CircularProgressIndicator(
             modifier = Modifier.fillMaxSize(),
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SegmentedButtonPreview() {
+    EtongTheme {
+        UserEnteringScreenModeToggle(
+            modifier = Modifier.padding(top = 32.dp),
+            onRegisterMode = {}
+        ) {}
     }
 }

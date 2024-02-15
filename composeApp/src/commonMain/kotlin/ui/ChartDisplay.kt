@@ -22,6 +22,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import formatNominal
 import kotlin.math.ceil
 
 @Composable
@@ -98,7 +99,7 @@ fun GradientProgressbar(
             ),
             topLeft = Offset(x = 0f, y = 0f),
             cornerRadius = CornerRadius(radius),
-            size = Size(width = progress, height = size.height)
+            size = Size(width = progress.takeIf { it <= size.width } ?: size.width, height = size.height)
         )
 
         drawText(
@@ -109,7 +110,7 @@ fun GradientProgressbar(
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
             ),
-            topLeft = Offset(10.dp.toPx(), 3.dp.toPx())
+            topLeft = Offset(10.dp.toPx(), 4.dp.toPx())
         )
     }
 }

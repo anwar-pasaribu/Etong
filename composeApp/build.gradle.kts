@@ -1,5 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -56,7 +55,6 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.animation)
             implementation(compose.materialIconsExtended)
-            @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
 
             implementation(libs.kotlinx.datetime)
@@ -64,13 +62,10 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.realm.base)
             implementation(libs.realm.sync)
-            implementation("com.fleeksoft.ksoup:ksoup:0.0.6")
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation("media.kamel:kamel-image:0.9.0")
-
-            implementation("com.moriatsushi.insetsx:insetsx:0.1.0-alpha10")
 
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.screenModel)

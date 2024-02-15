@@ -8,14 +8,14 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import ui.EtongTheme
-import ui.screen.CardListScreen
+import theme.EtongTheme
+import ui.screen.HomeScreen
 
 @Composable
 fun App() {
 
     EtongTheme {
-        Navigator(screen = CardListScreen()) { navigator ->
+        Navigator(screen = HomeScreen()) { navigator ->
             val supportSwipeBack = remember { getPlatform().type == PlatformType.IOS }
             if (supportSwipeBack) {
                 SlideTransition(navigator = navigator)

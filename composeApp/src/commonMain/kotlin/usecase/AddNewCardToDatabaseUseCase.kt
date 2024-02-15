@@ -7,6 +7,6 @@ class AddNewCardToDatabaseUseCase(
     private val repository: CardRepository
 ) {
     suspend operator fun invoke(card: Card) {
-        repository.tryAddToDb(card)
+        repository.tryAddCardToDb(card)
     }
 }
