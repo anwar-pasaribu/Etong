@@ -23,7 +23,6 @@ fun CurrencyAmountDisplay(modifier: Modifier = Modifier, amount: Double = 0.0) {
             modifier = Modifier.alignByBaseline(),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Light,
-            color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.width(6.dp))
         Text(
@@ -31,7 +30,6 @@ fun CurrencyAmountDisplay(modifier: Modifier = Modifier, amount: Double = 0.0) {
             modifier = Modifier.alignByBaseline(),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.ExtraBold,
-            color = MaterialTheme.colorScheme.primary
         )
     }
 }

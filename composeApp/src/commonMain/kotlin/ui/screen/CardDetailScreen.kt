@@ -31,7 +31,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -66,7 +65,6 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
             Column(
                 modifier =
                 Modifier.fillMaxSize()
-                    .padding(start = 4.dp, top = 16.dp, end = 4.dp)
                     .background(MaterialTheme.colorScheme.background)
             ) {
                 Spacer(
@@ -75,7 +73,10 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
                     )
                 )
 
-                Row {
+                Row(
+                    modifier = Modifier.requiredHeight(56.dp).padding(horizontal = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Row(
                         modifier = Modifier.weight(1F).fillMaxWidth().requiredHeight(32.dp),
                         horizontalArrangement = Arrangement.Start
@@ -87,7 +88,6 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onPrimary,
                                 )
                             }
                         )
@@ -102,17 +102,18 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
                     }
                 }
                 Spacer(Modifier.height(16.dp))
-                CreditCardItem(cardUiModel = cardUiModel,
+                CreditCardItem(
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                    cardUiModel = cardUiModel,
                     onCardClicked = {},
-                    onCardRemovalRequest = {}
                 )
 
                 TextButton(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp),
+                    shape = MaterialTheme.shapes.small,
                     onClick = {
                         openAddPaidAmountDialog.value = true
                     },
-
                 ) {
                     Text(
                         text = "Sudah bayar?",
@@ -121,6 +122,7 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
                 }
 
                 PaidAmountView(
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                     amount = cardUiModel.billAmount,
                     paid = paidAmount.value
                 )
@@ -129,7 +131,7 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
 
                 when (val currentState = state.value) {
                     CardDetailScreenModel.CardDetailScreenState.Loading -> {
-                        Column (
+                        Column(
                             modifier = Modifier.fillMaxWidth(),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -137,6 +139,7 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
                             LoadingView()
                         }
                     }
+
                     is CardDetailScreenModel.CardDetailScreenState.Success -> {
                         paidAmount.value = currentState.paidAmount
                         LazyColumn(
@@ -153,13 +156,15 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
                                 Box(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
                                     Text(
                                         text = cardPayment.paymentDate.toDdMonth(),
-                                        modifier = Modifier.wrapContentWidth().align(Alignment.CenterStart),
+                                        modifier = Modifier.wrapContentWidth()
+                                            .align(Alignment.CenterStart),
                                         style = MaterialTheme.typography.labelMedium
                                     )
 
                                     Text(
                                         text = cardPayment.amount.formatNominal,
-                                        modifier = Modifier.wrapContentWidth().align(Alignment.CenterEnd),
+                                        modifier = Modifier.wrapContentWidth()
+                                            .align(Alignment.CenterEnd),
                                         style = MaterialTheme.typography.labelMedium,
                                         fontWeight = FontWeight.Bold
                                     )
@@ -167,9 +172,11 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
                             }
                         }
                     }
+
                     is CardDetailScreenModel.CardDetailScreenState.DeleteSuccess -> {
                         navigator.pop()
                     }
+
                     is CardDetailScreenModel.CardDetailScreenState.Failure -> {
                         androidx.compose.animation.AnimatedVisibility(true) {
                             Text(
@@ -180,6 +187,7 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
                             )
                         }
                     }
+
                     else -> {}
                 }
 
@@ -188,6 +196,7 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
             when {
                 openAddPaidAmountDialog.value -> {
                     InputPaidAmountDetail(
+                        billAmount = cardUiModel.billAmount,
                         onDismissRequest = {
                             openAddPaidAmountDialog.value = false
                         },

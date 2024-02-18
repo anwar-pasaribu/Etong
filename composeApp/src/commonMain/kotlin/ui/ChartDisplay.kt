@@ -26,13 +26,14 @@ import formatNominal
 import kotlin.math.ceil
 
 @Composable
-fun PaidAmountView(amount: Double, paid: Double) {
+fun PaidAmountView(modifier: Modifier = Modifier, amount: Double, paid: Double) {
     Column(
-        modifier = Modifier
+        modifier = modifier.then(Modifier
             .fillMaxWidth()
             .background(
                 MaterialTheme.colorScheme.background
             )
+        )
     ) {
         val paidPercentage = (paid/amount) * 100
         GradientProgressbar(progressValue = paidPercentage.toFloat())

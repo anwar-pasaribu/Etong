@@ -4,7 +4,6 @@ import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import model.UserUiModel
 import usecase.GetUserLoginStatusUseCase
@@ -79,7 +78,6 @@ class UserEnteringScreenModel(
         state.value = UserEnteringScreenState.Loading
         screenModelScope.launch {
             logoutUserUseCase.invoke()
-            delay(5_000L)
             state.value = UserEnteringScreenState.Idle
         }
     }

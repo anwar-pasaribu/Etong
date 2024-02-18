@@ -1,6 +1,8 @@
 package com.unwur.etong
 
 import App
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -32,16 +34,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import theme.EtongTheme
+import ui.InputPaidAmountDetail
 import ui.PaidAmountView
 import ui.UserEnteringScreenModeToggle
+import ui.theme.EtongTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(
-                scrim = getColor(R.color.etongPrimary),
-                darkScrim = getColor(R.color.etongPrimary)
+            statusBarStyle = SystemBarStyle.auto(
+                lightScrim = getColor(R.color.etongPrimary),
+                darkScrim = getColor(R.color.etongPrimaryDark)
             )
         )
         super.onCreate(savedInstanceState)
@@ -158,5 +161,22 @@ fun SegmentedButtonPreview() {
             modifier = Modifier.padding(top = 32.dp),
             onRegisterMode = {}
         ) {}
+    }
+}
+
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES
+)
+@Preview(
+    name = "Light Mode",
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Composable
+fun InputPaidAmountDetailPreview() {
+    EtongTheme {
+        InputPaidAmountDetail(1000_000_000_000_000.0, {}, {})
     }
 }

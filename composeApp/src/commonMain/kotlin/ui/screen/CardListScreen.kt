@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
@@ -26,14 +26,12 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Logout
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -46,7 +44,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
@@ -54,6 +52,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import di.EtongAppDI
 import ui.ConfirmDialog
@@ -86,9 +85,8 @@ class CardListScreen : Screen {
                 ) {
                     FloatingActionButton(
                         modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        shape = FloatingActionButtonDefaults.largeShape,
                         onClick = { openAddCardDialog.value = true },
-                        shape = CircleShape,
                         content = {
                             Icon(
                                 imageVector = Icons.Filled.Add,
@@ -103,7 +101,7 @@ class CardListScreen : Screen {
             Surface {
                 Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
                     when (val currentState = state.value) {
-                        CardScreenModel.MainScreenState.Loading -> {
+                        is CardScreenModel.MainScreenState.Loading -> {
                             AnimatedVisibility(true) {
                                 Column (
                                     modifier = Modifier.fillMaxSize(),
@@ -116,57 +114,15 @@ class CardListScreen : Screen {
                         }
                         is CardScreenModel.MainScreenState.Success -> {
                             fabVisible.value = true
-                            AnimatedVisibility(
-                                visible = true,
-                                enter = scaleIn(initialScale = .5F),
-                                exit = scaleOut(),
-                            ) {
-                                LazyColumn(
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentPadding = PaddingValues(
-                                        horizontal = 10.dp,
-                                        vertical = 16.dp
-                                    ),
-                                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                                ) {
-                                    item {
-                                        Spacer(
-                                            Modifier.windowInsetsTopHeight(
-                                                WindowInsets.statusBars
-                                            )
-                                        )
-                                    }
-                                    stickyHeader {
-                                        CardListHeader(confirmLogoutDialogVisible)
-                                    }
-                                    items(
-                                        items = currentState.cardList,
-                                        key = { it.cardId }
-                                    ) { cardItem ->
-                                        CreditCardItem(
-                                            modifier = Modifier.animateItemPlacement(),
-                                            cardUiModel = cardItem,
-                                            onCardClicked = {
-                                                navigator.push(CardDetailScreen(it))
-                                            },
-                                            onCardRemovalRequest = {
-                                                cardScreenModel.removeCard(it)
-                                            }
-                                        )
-                                    }
-                                    item {
-                                        TotalBillCardItem(
-                                            cardUiModel = currentState.totalBillCard,
-                                        )
-                                    }
-                                    item {
-                                        Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
-                                    }
-                                }
+                            AnimatedVisibility(visible = true) {
+                                CardListView(
+                                    confirmLogoutDialogVisible,
+                                    currentState,
+                                    navigator
+                                )
                             }
                         }
-
-                        CardScreenModel.MainScreenState.Empty -> {
+                        is CardScreenModel.MainScreenState.Empty -> {
                             fabVisible.value = true
                             AnimatedVisibility(true) {
                                 Column (
@@ -183,15 +139,20 @@ class CardListScreen : Screen {
                                 }
                             }
                         }
-
                         is CardScreenModel.MainScreenState.Failure -> {
                             AnimatedVisibility(true) {
-                                Text(
-                                    text = "Failure - ${currentState.errorMessage}",
-                                    modifier = Modifier.fillMaxSize().padding(16.dp),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.error
-                                )
+                                Column (
+                                    modifier = Modifier.fillMaxSize(),
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Text(
+                                        text = "Failure - ${currentState.errorMessage}",
+                                        modifier = Modifier.fillMaxSize().padding(16.dp),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.error
+                                    )
+                                }
                             }
                         }
 
@@ -229,16 +190,60 @@ class CardListScreen : Screen {
     }
 
     @Composable
-    fun CardListHeader(confirmLogoutDialogVisible: MutableState<Boolean>) {
-        Column {
-            Spacer(
-                Modifier.windowInsetsTopHeight(
-                    WindowInsets.statusBars
+    private fun CardListView(
+        confirmLogoutDialogVisible: MutableState<Boolean>,
+        currentState: CardScreenModel.MainScreenState.Success,
+        navigator: Navigator
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(
+                horizontal = 10.dp,
+                vertical = 16.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            item {
+                Spacer(
+                    Modifier.windowInsetsTopHeight(
+                        WindowInsets.statusBars
+                    )
                 )
-            )
+            }
+            stickyHeader {
+                CardListHeader(confirmLogoutDialogVisible)
+            }
+            items(
+                items = currentState.cardList,
+                key = { it.cardId }
+            ) { cardItem ->
+                CreditCardItem(
+                    modifier = Modifier.animateItemPlacement(),
+                    cardUiModel = cardItem,
+                    onCardClicked = {
+                        navigator.push(CardDetailScreen(it))
+                    }
+                )
+            }
+            item {
+                TotalBillCardItem(
+                    cardUiModel = currentState.totalBillCard,
+                )
+            }
+            item {
+                Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
+            }
+        }
+    }
+
+    @Composable
+    fun CardListHeader(confirmLogoutDialogVisible: MutableState<Boolean>) {
+        val density = LocalDensity.current
+        Column {
             Row(
                 modifier = Modifier.fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.background),
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -258,7 +263,6 @@ class CardListScreen : Screen {
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.Logout,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onPrimary,
                             )
                         }
                     )

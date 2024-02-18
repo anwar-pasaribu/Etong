@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_PARAMETER")
+
 package ui
 
 import androidx.compose.animation.AnimatedVisibility
@@ -7,6 +9,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -74,7 +77,6 @@ fun CardContextMenu(
                 Icon(
                     imageVector = Icons.Filled.MoreVert,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimary,
                 )
             }
         )
@@ -103,7 +105,6 @@ fun CreditCardItem(
     modifier: Modifier = Modifier,
     cardUiModel: CardUiModel,
     onCardClicked: (CardUiModel) -> Unit,
-    onCardRemovalRequest: (CardUiModel) -> Unit,
 ) {
     var selectedCard by remember { mutableStateOf(false) }
 
@@ -114,8 +115,11 @@ fun CreditCardItem(
     }
     val animatedElevation = animateDpAsState(targetValue = elevation)
 
-    val gradient =
+    val gradient = if (isSystemInDarkTheme()) {
+        Brush.horizontalGradient(listOf(Color(0xFF004440), Color(0xFF00312e)))
+    } else {
         Brush.horizontalGradient(listOf(Color(0xFF28D8A3), Color(0xFF00BEB2)))
+    }
 
     Card(
         modifier = modifier.then(Modifier.fillMaxWidth().heightIn(min = 120.dp, max = 160.dp)),
@@ -153,17 +157,6 @@ fun CreditCardItem(
                 Text(
                     text = "**** - ${cardUiModel.cardNumber}"
                 )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth().requiredHeight(32.dp),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    AnimatedVisibility(selectedCard) {
-                        CardContextMenu {
-                            onCardRemovalRequest(cardUiModel)
-                        }
-                    }
-                }
             }
 
             Row(modifier = Modifier.padding(top = 8.dp).fillMaxWidth()) {

@@ -33,6 +33,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -137,9 +138,9 @@ data class UserEnteringScreen(var logoutRequested: Boolean = false) : Screen {
     @Composable
     fun LoginForm(
         modifier: Modifier,
-        loginFailed: State<Boolean>,
+        loginFailed: MutableState<Boolean>,
         loadingMode: State<Boolean>,
-        errorMessage: State<String>,
+        errorMessage: MutableState<String>,
         proceedLogin: (String, String) -> Unit,
         proceedRegister: (String, String) -> Unit
     ) {
@@ -159,10 +160,14 @@ data class UserEnteringScreen(var logoutRequested: Boolean = false) : Screen {
                 onRegisterMode = {
                     ctaActionButtonText.value = "Register"
                     loginMode.value = false
+                    loginFailed.value = false
+                    errorMessage.value = ""
                 },
                 onLoginMode = {
                     ctaActionButtonText.value = "Login"
                     loginMode.value = true
+                    loginFailed.value = false
+                    errorMessage.value = ""
                 }
             )
 
@@ -178,8 +183,8 @@ data class UserEnteringScreen(var logoutRequested: Boolean = false) : Screen {
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    var userIdentification by remember { mutableStateOf("asa@mail.com") }
-                    var userAuthorization by remember { mutableStateOf("asa123") }
+                    var userIdentification by remember { mutableStateOf("") }
+                    var userAuthorization by remember { mutableStateOf("") }
                     var passwordVisible by rememberSaveable { mutableStateOf(false) }
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),

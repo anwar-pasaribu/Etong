@@ -1,5 +1,6 @@
 package ui
 
+import InputNumber
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,13 +12,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -42,9 +40,11 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import model.CardPaymentUiModel
+import kotlin.math.roundToLong
 
 @Composable
 fun InputPaidAmountDetail(
+    billAmount: Double = 0.0,
     onDismissRequest: () -> Unit,
     onSubmitRequest: (cardPaymentUiModel: CardPaymentUiModel) -> Unit
 ) {
@@ -52,58 +52,67 @@ fun InputPaidAmountDetail(
         onDismissRequest = { onDismissRequest() },
         properties = DialogProperties(dismissOnClickOutside = false),
     ) {
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
-
-            Row(
-                modifier = Modifier.clip(CircleShape).size(40.dp, 40.dp)
-                    .background(MaterialTheme.colorScheme.background),
-                horizontalArrangement = Arrangement.Start
-            ) {
-                IconButton(
-                    modifier = Modifier.fillMaxSize().background(Color.Transparent),
-                    onClick = { onDismissRequest() },
-                    content = {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                        )
-                    }
-                )
-            }
-
-            Spacer(Modifier.height(16.dp))
-            Card(
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
-            ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Card {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 16.dp),
                     verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.Start
                 ) {
+
+                    Row(
+                        modifier = Modifier.clip(CircleShape).size(40.dp, 40.dp)
+                            .background(MaterialTheme.colorScheme.background),
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        IconButton(
+                            modifier = Modifier.fillMaxSize(),
+                            onClick = { onDismissRequest() },
+                            content = {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = null,
+                                )
+                            }
+                        )
+                    }
+
+                    Spacer(Modifier.height(16.dp))
+
                     var paidAmount by remember { mutableStateOf("") }
-                    OutlinedTextField(
+                    Button(
+                        shape = MaterialTheme.shapes.small,
+                        onClick = {
+                            paidAmount = billAmount.roundToLong().toString()
+                        }
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            textAlign = TextAlign.Center,
+                            text = "Pembayaran penuh"
+                        )
+                    }
+
+                    Spacer(Modifier.height(16.dp))
+                    Text(
                         modifier = Modifier.fillMaxWidth(),
-                        value = paidAmount,
-                        onValueChange = {
+                        text = "Input nominal",
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Start
+                    )
+                    InputNumber(
+                        initialValue = paidAmount,
+                        label = "Pembayaran",
+                        placeholder = "Total Pembayaran",
+                        onTyped = {
                             paidAmount = it
-                        },
-                        placeholder = {
-                            Text(text = "Total Pembayaran")
-                        },
-                        label = {
-                            Text(text = "Pembayaran")
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Decimal,
-                            imeAction = ImeAction.Done
-                        ),
-                        visualTransformation = {
-                            priceFilter(it.text)
-                        },
+                        }
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
@@ -119,6 +128,7 @@ fun InputPaidAmountDetail(
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
+
                     val buttonEnabled = paidAmount.isNotEmpty()
                             && paidDateMillis != 0L
                     Button(onClick = {
