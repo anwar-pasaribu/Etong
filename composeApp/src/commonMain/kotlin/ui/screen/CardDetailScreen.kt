@@ -127,10 +127,8 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
                     paid = paidAmount.value
                 )
 
-                Spacer(Modifier.height(16.dp))
-
                 when (val currentState = state.value) {
-                    CardDetailScreenModel.CardDetailScreenState.Loading -> {
+                    is CardDetailScreenModel.CardDetailScreenState.Loading -> {
                         Column(
                             modifier = Modifier.fillMaxWidth(),
                             verticalArrangement = Arrangement.Center,
