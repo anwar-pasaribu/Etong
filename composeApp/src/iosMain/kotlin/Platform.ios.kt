@@ -1,4 +1,7 @@
 import config.PlatformType
+import platform.Foundation.NSNumber
+import platform.Foundation.NSNumberFormatter
+import platform.Foundation.NSNumberFormatterDecimalStyle
 import platform.UIKit.UIDevice
 
 class IOSPlatform: Platform {
@@ -9,5 +12,9 @@ class IOSPlatform: Platform {
 actual fun getPlatform(): Platform = IOSPlatform()
 actual val Double.formatNominal: String
     get() {
-        return (this).toString()
+        val nsFormatted = NSNumberFormatter().apply {
+            minimumFractionDigits = 0u
+            numberStyle = NSNumberFormatterDecimalStyle
+        }.stringFromNumber(number = NSNumber(double = this)) ?: this.toString()
+        return nsFormatted
     }
