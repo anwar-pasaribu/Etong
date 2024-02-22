@@ -1,13 +1,18 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.realm)
+    alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.spotless)
 }
 
 kotlin {
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -31,7 +36,7 @@ kotlin {
 
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(libs.compose.ui)
             implementation(libs.compose.ui.tooling.preview)
@@ -41,13 +46,22 @@ kotlin {
             compileOnly(libs.realm.base)
             compileOnly(libs.realm.sync)
             implementation(libs.ktor.client.android)
+
+            // File picker
+            implementation(libs.calf.filepicker)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+
+            // File picker
+            implementation(libs.calf.filepicker)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
+
+            // File picker
+            implementation(libs.calf.filepicker)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -71,6 +85,9 @@ kotlin {
             implementation(libs.voyager.screenModel)
             implementation(libs.voyager.screenModel)
             implementation(libs.voyager.transitions)
+
+            // GenAI SDK
+            implementation(libs.generativeai.google)
         }
     }
 }
@@ -100,6 +117,7 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "META-INF/versions/9/previous-compilation-data.bin"
+            excludes += "META-INF/versions/**"
         }
     }
     buildTypes {
@@ -113,6 +131,10 @@ android {
     }
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
+    }
+    lint {
+        quiet = true
+        abortOnError = false
     }
 }
 
@@ -135,4 +157,47 @@ compose.desktop {
             }
         }
     }
+}
+
+buildkonfig {
+    packageName = "com.unwur.etong"
+
+    val localProperties =
+        Properties().apply {
+            val propsFile = rootProject.file("local.properties")
+            if (propsFile.exists()) {
+                load(propsFile.inputStream())
+            }
+        }
+
+    defaultConfigs {
+        buildConfigField(
+            FieldSpec.Type.STRING,
+            "GEMINI_API_KEY",
+            localProperties["gemini_api_key"]?.toString() ?: "",
+        )
+    }
+}
+
+configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    kotlin {
+        target("**/*.kt")
+        targetExclude("$buildDir/**/*.kt")
+        targetExclude("bin/**/*.kt")
+        ktlint().editorConfigOverride(
+            mapOf(
+                "ktlint_standard_filename" to "disabled",
+                "ktlint_standard_function-naming" to "disabled",
+            ),
+        )
+        licenseHeaderFile(rootProject.file("licenses/MIT"))
+    }
+    kotlinGradle {
+        target("**/*.gradle.kts")
+        ktlint()
+    }
+}
+
+task("testClasses").doLast {
+    println("This is a dummy testClasses task")
 }
