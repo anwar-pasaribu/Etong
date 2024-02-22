@@ -21,7 +21,7 @@ private fun String.withThousands(separator: Char = '.'): String {
 
 fun priceFilter(
     text: String,
-    thousandSeparator: (String) -> String = { text -> text.withThousands() },
+    thousandSeparator: (String) -> String = { typedText -> typedText.withThousands() },
 ): TransformedText {
     val out = thousandSeparator(text)
     val offsetMapping = object : OffsetMapping {

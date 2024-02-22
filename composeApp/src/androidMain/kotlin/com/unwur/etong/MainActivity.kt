@@ -84,7 +84,7 @@ fun BarChart(values: List<Int>) {
             .padding(16.dp),
         verticalArrangement = Arrangement.Bottom
     ) {
-        values.forEachIndexed { index, value ->
+        values.forEachIndexed { _, value ->
             Bar(
                 value = value,
                 maxValue = maxValue,
@@ -139,6 +139,7 @@ fun LoadingViewPreview() {
     }
 }
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun LoadingView(modifier: Modifier = Modifier, skeletonLayout: @Composable () -> Unit = {}) {
     Box(

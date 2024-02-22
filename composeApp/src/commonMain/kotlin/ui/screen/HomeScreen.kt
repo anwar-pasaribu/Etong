@@ -30,12 +30,12 @@ class HomeScreen: Screen {
             is HomeScreenModel.HomeScreenState.Success -> {
                 val loggedIn = currentState.userUiModel.userLoggedIn
                 if (loggedIn) {
-                    Navigator(CardListScreen()) { navigator ->
+                    Navigator(CardListScreen()) { appNavigator ->
                         val supportSwipeBack = remember { getPlatform().type == PlatformType.IOS }
                         if (supportSwipeBack) {
-                            SlideTransition(navigator = navigator)
+                            SlideTransition(navigator = appNavigator)
                         } else {
-                            FadeTransition(navigator = navigator)
+                            FadeTransition(navigator = appNavigator)
                         }
                     }
                 } else {

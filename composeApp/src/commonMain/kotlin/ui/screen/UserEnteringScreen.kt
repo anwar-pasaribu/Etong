@@ -116,8 +116,6 @@ data class UserEnteringScreen(var logoutRequested: Boolean = false) : Screen {
                     loadingMode.value = false
                     errorMessage.value = ""
                 }
-
-                else -> {}
             }
 
             LoginForm(

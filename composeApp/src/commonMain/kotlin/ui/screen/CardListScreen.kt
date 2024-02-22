@@ -238,7 +238,6 @@ class CardListScreen : Screen {
 
     @Composable
     fun CardListHeader(confirmLogoutDialogVisible: MutableState<Boolean>) {
-        val density = LocalDensity.current
         Column {
             Row(
                 modifier = Modifier.fillMaxWidth()
