@@ -2,6 +2,7 @@ package ui.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -212,16 +213,16 @@ data class UserEnteringScreen(var logoutRequested: Boolean = false) : Screen {
                             imeAction = ImeAction.Done
                         ),
                         trailingIcon = {
-                            val image = if (passwordVisible)
-                                Icons.Filled.Visibility
-                            else Icons.Filled.VisibilityOff
-
-                            // Please provide localized description for accessibility services
                             val description =
                                 if (passwordVisible) "Hide password" else "Show password"
 
                             IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                                Icon(imageVector = image, description)
+                                Crossfade(targetState = passwordVisible) {
+                                    Icon(
+                                        if (it) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                        description
+                                    )
+                                }
                             }
                         }
                     )
