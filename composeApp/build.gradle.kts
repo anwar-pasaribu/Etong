@@ -131,7 +131,7 @@ compose.desktop {
                 iconFile.set(rootProject.file("icons/icon.ico"))
             }
             linux {
-                iconFile.set(rootProject.file("icons/icon.png"))
+                iconFile.set(rootProject.file("icons/etong_logo.png"))
             }
         }
     }
