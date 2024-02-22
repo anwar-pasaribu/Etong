@@ -35,9 +35,9 @@ fun ConfirmDialog(
         onDismissRequest = { onDismissRequest() },
         properties = DialogProperties(dismissOnClickOutside = false),
     ) {
-        Card(shape = MaterialTheme.shapes.medium, colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.background
-        )) {
+        Card(
+            shape = MaterialTheme.shapes.medium,
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
