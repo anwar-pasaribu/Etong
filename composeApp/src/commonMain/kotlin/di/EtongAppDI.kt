@@ -46,7 +46,7 @@ object EtongAppDI {
                 add(realm.query<Card>("ownerId == $0", currentUser.id))
                 add(realm.query<CardPayment>())
             }
-            .log(LogLevel.ALL)  // TODO Remove before release
+            .log(LogLevel.NONE)  // TODO Remove before release
             .waitForInitialRemoteData()
             .build()
     }

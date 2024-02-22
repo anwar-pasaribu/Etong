@@ -8,16 +8,16 @@ import repository.CardRepository
 class LoginUserUseCase(
     private val realmApp: App
 ) {
-    suspend operator fun invoke(userIdentification: String, userAuthorization: String) : Boolean {
+    suspend operator fun invoke(userIdentification: String, userAuthorization: String) : Result<Boolean> {
         val credentials = Credentials.emailPassword(
             email = userIdentification,
             password = userAuthorization
         )
         return try {
             realmApp.login(credentials)
-            true
+            Result.success(true)
         } catch (e: AuthException) {
-            false
+            Result.failure(e)
         }
     }
 }

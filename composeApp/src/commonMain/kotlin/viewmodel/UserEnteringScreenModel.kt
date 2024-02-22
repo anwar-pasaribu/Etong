@@ -27,7 +27,9 @@ class UserEnteringScreenModel(
         data class Failure(
             val errorMessage: String
         ) : UserEnteringScreenState()
-        data object Empty : UserEnteringScreenState()
+
+        data class LoginFailure(val msg: String) : UserEnteringScreenState()
+
         data class Success(
             val userUiModel: UserUiModel
         ) : UserEnteringScreenState()
@@ -36,17 +38,24 @@ class UserEnteringScreenModel(
     fun startLogin(userIdentification: String, userAuthorization: String) {
         state.value = UserEnteringScreenState.Loading
         screenModelScope.launch {
-            val loginSucceed = loginUserUseCase.invoke(
+            val loginResult = loginUserUseCase.invoke(
                 userIdentification, userAuthorization
             )
 
-            state.value = UserEnteringScreenState.Success(
-                UserUiModel(
-                    userIdentification = userIdentification,
-                    userAuthorization = "",
-                    userLoggedIn = loginSucceed
+            loginResult.onSuccess { loginSucceed ->
+                state.value = UserEnteringScreenState.Success(
+                    UserUiModel(
+                        userIdentification = userIdentification,
+                        userAuthorization = "",
+                        userLoggedIn = loginSucceed
+                    )
                 )
-            )
+            }
+
+            loginResult.onFailure {
+                state.value = UserEnteringScreenState.LoginFailure(it.message ?: it.stackTraceToString())
+            }
+
         }
     }
 

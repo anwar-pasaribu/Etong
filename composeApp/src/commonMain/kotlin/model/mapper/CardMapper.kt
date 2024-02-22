@@ -6,6 +6,7 @@ import model.CardUiModel
 import model.storage.Card
 import model.storage.CardPayment
 import utils.cardutils.CardType
+import utils.cardutils.identifyCardTypeFromCardTypeEnumName
 import utils.cardutils.identifyCardTypeFromNumber
 
 fun CardUiModel.toDbInstance() : Card {
@@ -14,7 +15,9 @@ fun CardUiModel.toDbInstance() : Card {
     if (cardId.isNotEmpty()) {
         card._id = RealmUUID.Companion.from(cardId)
     }
-    card.cardNumber = cardNumber
+    card.cardNumber = "-"
+    card.cardLabel = cardLabel
+    card.cardType = cardType.name
     card.billAmount = billAmount
     card.billMinAmount = billMinAmount
     card.billingDate = billingDate
@@ -25,21 +28,21 @@ fun CardUiModel.toDbInstance() : Card {
 
 
 fun Card.toUiModel() : CardUiModel {
-    val truncatedCardNumber =
-        if (this.cardNumber.length > 8) this.cardNumber.substring(
-            this.cardNumber.length-4, this.cardNumber.length
-        ) else this.cardNumber
-    val cardType = identifyCardTypeFromNumber(this.cardNumber)
+    val cardType = identifyCardTypeFromCardTypeEnumName(this.cardType)
     val cardLogo = when(cardType) {
         CardType.VISA -> { "visa.png" }
         CardType.JCB -> { "jcb.png" }
         CardType.MASTERCARD -> { "mastercard.png" }
+        CardType.MAESTRO -> { "maestro.png" }
+        CardType.AMERICAN_EXPRESS -> { "american_express.png" }
+        CardType.DINNERS_CLUB -> { "dinners_club.png" }
+        CardType.DISCOVER -> { "discover.png" }
         else -> { "" }
     }
 
     return CardUiModel(
         cardId = this._id.toString(),
-        cardNumber = truncatedCardNumber,
+        cardLabel = this.cardLabel,
         cardType = cardType,
         cardLogo = cardLogo,
         billAmount = this.billAmount,

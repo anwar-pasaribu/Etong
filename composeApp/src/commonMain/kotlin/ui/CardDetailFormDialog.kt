@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -31,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -42,6 +42,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import model.CardUiModel
+import utils.cardutils.CardType
 
 @Composable
 fun InputCardDetail(
@@ -85,28 +86,34 @@ fun InputCardDetail(
 
                     Spacer(Modifier.height(16.dp))
 
-                    var cardNumber by remember { mutableStateOf("") }
+                    var cardLabel by remember { mutableStateOf("") }
+                    var cardTypeString by remember { mutableStateOf("") }
                     var billAmount by remember { mutableStateOf("") }
                     var billMinAmount by remember { mutableStateOf("") }
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        textStyle = MaterialTheme.typography.bodyLarge.copy(fontFamily = FontFamily.Monospace),
-                        value = cardNumber,
-                        onValueChange = {
-                            cardNumber = it
-                        },
-                        placeholder = {
-                            Text(text = "Nomor Kartu")
-                        },
-                        label = {
-                            Text(text = "Kartu")
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Decimal,
-                            imeAction = ImeAction.Next
-                        ),
-                        visualTransformation = CardNumberFilter,
-                    )
+
+                    Row (verticalAlignment = Alignment.CenterVertically) {
+                        DropdownCardTypeSection(
+                            modifier = Modifier.width(56.dp).padding(end = 8.dp),
+                            onItemSelected = {
+                                cardTypeString = it
+                            }
+                        )
+                        OutlinedTextField(
+                            modifier = Modifier.weight(.9f),
+                            textStyle = MaterialTheme.typography.bodyLarge,
+                            value = cardLabel,
+                            onValueChange = {
+                                if (it.length <= 16) cardLabel = it
+                            },
+                            singleLine = true,
+                            placeholder = { Text(text = "cth. Visa BCA") },
+                            label = { Text(text = "Nama Kartu") },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Text,
+                                imeAction = ImeAction.Next
+                            ),
+                        )
+                    }
                     Spacer(modifier = Modifier.height(8.dp))
                     InputNumber(
                         label = "Total Tagihan",
@@ -137,18 +144,21 @@ fun InputCardDetail(
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
-                    val buttonEnabled = cardNumber.isNotEmpty()
+                    val buttonEnabled = cardLabel.isNotEmpty()
                             && billAmount.isNotEmpty()
                             && billMinAmount.isNotEmpty()
+                            && cardTypeString.isNotEmpty()
                             && dueDateMillis != 0L
                     Button(onClick = {
                         val cardDetail = CardUiModel(
                             "",
-                            cardNumber = cardNumber,
+                            cardLabel = cardLabel,
                             billAmount = billAmount.toDouble(),
                             billMinAmount = billMinAmount.toDouble(),
                             billDueDate = dueDateMillis,
-                            billingDate = 0L
+                            billingDate = 0L,
+                            cardType = CardType.valueOf(cardTypeString),
+                            cardLogo = ""
                         )
                         onSubmitRequest(cardDetail)
                         onDismissRequest()

@@ -13,6 +13,8 @@ class Card() : RealmObject {
     var billingDate: Long = 0L
     var billDueDate: Long = 0L
     var ownerId: String = ""
+    var cardLabel: String = ""
+    var cardType: String = ""
 
     constructor(ownerId: String = "") : this() {
         this.ownerId = ownerId
@@ -25,6 +27,8 @@ class Card() : RealmObject {
         if (this.cardNumber != other.cardNumber) return false
         if (this.billAmount != other.billAmount) return false
         if (this.billMinAmount != other.billMinAmount) return false
+        if (this.cardLabel != other.cardLabel) return false
+        if (this.cardType != other.cardType) return false
         return true
     }
 }

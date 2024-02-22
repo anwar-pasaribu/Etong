@@ -3,7 +3,6 @@ package viewmodel
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import io.realm.kotlin.types.RealmUUID
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -16,6 +15,7 @@ import usecase.DeleteCardFromDatabaseUseCase
 import usecase.ObserveCardListUseCase
 import usecase.ReloadRealmDatabaseUseCase
 import usecase.ToggleOnOffSyncUseCase
+import utils.cardutils.CardType
 
 class CardScreenModel(
     private val toggleOnOffSyncUseCase: ToggleOnOffSyncUseCase,
@@ -59,11 +59,13 @@ class CardScreenModel(
                         },
                         CardUiModel(
                             cardId = "",
-                            cardNumber = "",
+                            cardLabel = "",
                             billAmount = cardList.sumOf { it.billAmount },
                             billMinAmount = cardList.sumOf { it.billMinAmount },
                             billDueDate = 0L,
-                            billingDate = 0L
+                            billingDate = 0L,
+                            cardLogo = "",
+                            cardType = CardType.UNKNOWN
                         )
                     )
                 }

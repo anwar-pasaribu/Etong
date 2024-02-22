@@ -105,6 +105,12 @@ data class UserEnteringScreen(var logoutRequested: Boolean = false) : Screen {
                     errorMessage.value = currentState.errorMessage
                 }
 
+                is UserEnteringScreenModel.UserEnteringScreenState.LoginFailure -> {
+                    loginFailed.value = true
+                    loadingMode.value = false
+                    errorMessage.value = currentState.msg
+                }
+
                 is UserEnteringScreenModel.UserEnteringScreenState.Idle -> {
                     loginFailed.value = false
                     loadingMode.value = false
@@ -240,7 +246,7 @@ data class UserEnteringScreen(var logoutRequested: Boolean = false) : Screen {
                     AnimatedVisibility(visible = errorMessage.value.isNotEmpty()) {
                         Text(
                             text = errorMessage.value,
-                            style = MaterialTheme.typography.bodyLarge,
+                            style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.error
                         )
                         Spacer(modifier = Modifier.height(16.dp))

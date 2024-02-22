@@ -1,9 +1,7 @@
 package usecase
 
 import io.realm.kotlin.mongodb.App
-import io.realm.kotlin.mongodb.Credentials
 import io.realm.kotlin.mongodb.exceptions.AuthException
-import repository.CardRepository
 
 class RegisterUserUseCase(
     private val realmApp: App

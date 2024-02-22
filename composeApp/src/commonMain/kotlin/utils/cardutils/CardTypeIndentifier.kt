@@ -23,3 +23,17 @@ fun identifyCardTypeFromNumber(cardNumber: String): CardType {
         else -> CardType.UNKNOWN
     }
 }
+
+fun identifyCardTypeFromCardTypeEnumName(cardTypeEnumName: String): CardType {
+
+    return when (cardTypeEnumName) {
+        CardType.JCB.name -> CardType.JCB
+        CardType.AMERICAN_EXPRESS.name -> CardType.AMERICAN_EXPRESS
+        CardType.DINNERS_CLUB.name -> CardType.DINNERS_CLUB
+        CardType.VISA.name -> CardType.VISA
+        CardType.MASTERCARD.name -> CardType.MASTERCARD
+        CardType.DISCOVER.name -> CardType.DISCOVER
+        CardType.MAESTRO.name -> CardType.MAESTRO
+        else -> CardType.UNKNOWN
+    }
+}
