@@ -65,7 +65,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
-            implementation("media.kamel:kamel-image:0.9.0")
+            implementation(libs.kamel.image)
 
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.screenModel)
@@ -124,6 +124,15 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.unwur.etong"
             packageVersion = "1.0.0"
+            macOS {
+                iconFile.set(rootProject.file("icons/etong_logo.png"))
+            }
+            windows {
+                iconFile.set(rootProject.file("icons/icon.ico"))
+            }
+            linux {
+                iconFile.set(rootProject.file("icons/icon.png"))
+            }
         }
     }
 }
