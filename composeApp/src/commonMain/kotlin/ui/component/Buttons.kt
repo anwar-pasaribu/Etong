@@ -22,8 +22,8 @@ import getPlatform
 @Composable
 fun BackButton(modifier: Modifier = Modifier, onAction: () -> Unit) {
     Row(
-        modifier = Modifier.clip(CircleShape).size(32.dp, 32.dp)
-            .background(MaterialTheme.colorScheme.background),
+        modifier = modifier.then(Modifier.clip(CircleShape).size(32.dp, 32.dp)
+            .background(MaterialTheme.colorScheme.background)),
         horizontalArrangement = Arrangement.Start
     ) {
         IconButton(

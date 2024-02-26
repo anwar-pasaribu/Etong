@@ -1,8 +1,5 @@
-@file:Suppress("UNUSED_PARAMETER")
-
 package ui
 
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image

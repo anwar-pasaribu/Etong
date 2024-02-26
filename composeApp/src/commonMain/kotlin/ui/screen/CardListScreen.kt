@@ -5,14 +5,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
@@ -43,7 +39,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -281,54 +276,6 @@ class CardListScreen : Screen {
             }
             item {
                 Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
-            }
-        }
-    }
-
-    @Composable
-    fun CardListHeader(confirmLogoutDialogVisible: MutableState<Boolean>) {
-        val localNavigator = LocalNavigator.currentOrThrow
-        Column {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    style = MaterialTheme.typography.displayMedium,
-                    text = "Bills"
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    IconButton(
-                        modifier = Modifier.size(32.dp, 32.dp),
-                        onClick = {
-                            localNavigator.push(ChatScreen())
-                        },
-                        content = {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Chat,
-                                contentDescription = null,
-                            )
-                        }
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    IconButton(
-                        modifier = Modifier.size(32.dp, 32.dp),
-                        onClick = {
-                            confirmLogoutDialogVisible.value = true
-                        },
-                        content = {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Logout,
-                                contentDescription = null,
-                            )
-                        }
-                    )
-                }
             }
         }
     }
