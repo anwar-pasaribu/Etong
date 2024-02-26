@@ -99,13 +99,6 @@ fun CreditCardItem(
 ) {
     var selectedCard by remember { mutableStateOf(false) }
 
-    val elevation = if (selectedCard) {
-        16.dp
-    } else {
-        0.dp
-    }
-    val animatedElevation = animateDpAsState(targetValue = elevation)
-
     val gradient = if (isSystemInDarkTheme()) {
         Brush.horizontalGradient(listOf(Color(0xFF004440), Color(0xFF00312e)))
     } else {
@@ -114,9 +107,9 @@ fun CreditCardItem(
 
     Card(
         modifier = modifier.then(Modifier.fillMaxWidth().heightIn(min = 120.dp, max = 160.dp)),
-        elevation = CardDefaults.cardElevation(animatedElevation.value),
+        elevation = CardDefaults.elevatedCardElevation(0.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         shape = MaterialTheme.shapes.medium,
-        border = BorderStroke(width = 0.dp, color = Color.Transparent)
     ) {
         Column(
             modifier = Modifier.background(gradient).combinedClickable(

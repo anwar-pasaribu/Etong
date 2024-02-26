@@ -46,6 +46,7 @@ import ui.CreditCardItem
 import ui.InputPaidAmountDetail
 import ui.LoadingView
 import ui.PaidAmountView
+import ui.component.BackButton
 import utils.toDdMonth
 import viewmodel.CardDetailScreenModel
 
@@ -78,22 +79,15 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
-                        modifier = Modifier.weight(1F).fillMaxWidth().requiredHeight(32.dp),
+                        modifier = Modifier.weight(1F),
                         horizontalArrangement = Arrangement.Start
                     ) {
-                        IconButton(
-                            modifier = Modifier.size(32.dp, 32.dp),
-                            onClick = { navigator.pop() },
-                            content = {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = null,
-                                )
-                            }
-                        )
+                        BackButton {
+                            navigator.pop()
+                        }
                     }
                     Row(
-                        modifier = Modifier.weight(1F).fillMaxWidth().requiredHeight(32.dp),
+                        modifier = Modifier.weight(1F),
                         horizontalArrangement = Arrangement.End
                     ) {
                         CardContextMenu {
