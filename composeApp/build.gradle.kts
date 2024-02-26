@@ -88,6 +88,9 @@ kotlin {
 
             // GenAI SDK
             implementation(libs.generativeai.google)
+
+            implementation("dev.chrisbanes.haze:haze:0.5.3")
+            implementation("dev.chrisbanes.haze:haze-materials:0.5.3")
         }
     }
 }
@@ -175,6 +178,16 @@ buildkonfig {
             FieldSpec.Type.STRING,
             "GEMINI_API_KEY",
             localProperties["gemini_api_key"]?.toString() ?: "",
+        )
+        buildConfigField(
+            FieldSpec.Type.STRING,
+            "ATLAS_APP_ID",
+            localProperties["atlas_app_id"]?.toString() ?: "",
+        )
+        buildConfigField(
+            FieldSpec.Type.STRING,
+            "ATLAS_BASE_URL",
+            localProperties["atlas_base_url"]?.toString() ?: "",
         )
     }
 }
