@@ -1,5 +1,6 @@
 package di
 
+import com.unwur.etong.BuildKonfig
 import datasource.EtongDatasource
 import io.ktor.client.HttpClient
 import io.realm.kotlin.Realm
@@ -31,12 +32,13 @@ import viewmodel.UserEnteringScreenModel
 object EtongAppDI {
 
     private val realmApp by lazy {
-        val app = App.create(
-            AppConfiguration.Builder("devicesync-sutxw")
-                .baseUrl("https://services.cloud.mongodb.com")
+        val atlasAppId = BuildKonfig.ATLAS_APP_ID
+        val atlasBaseUrl = BuildKonfig.ATLAS_BASE_URL
+        App.create(
+            AppConfiguration.Builder(atlasAppId)
+                .baseUrl(atlasBaseUrl)
                 .build()
         )
-        app
     }
 
     private val realmSyncConfigBuilder: SyncConfiguration by lazy {
