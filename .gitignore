@@ -22,3 +22,4 @@ composeApp/release
 /composeApp/default.realm
 /composeApp/default.realm.lock
 /iosApp/iosApp.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+keystore.properties
