@@ -195,7 +195,7 @@ buildkonfig {
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     kotlin {
         target("**/*.kt")
-        targetExclude("$buildDir/**/*.kt")
+        targetExclude("${layout.buildDirectory}/**/*.kt")
         targetExclude("bin/**/*.kt")
         ktlint().editorConfigOverride(
             mapOf(
@@ -209,8 +209,4 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         target("**/*.gradle.kts")
         ktlint()
     }
-}
-
-task("testClasses").doLast {
-    println("This is a dummy testClasses task")
 }
