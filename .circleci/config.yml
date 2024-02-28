@@ -1,12 +1,13 @@
 version: 2
 orbs:
-  android: circleci/android@1.0
+  android: circleci/android@2.0.3
 jobs:
   build:
     working_directory: ~/code
     docker:
       #cicleci image for JAVA version 1.8
       #     - image: circleci/android:api-25-alpha
+      - image: cimg/openjdk:17.0.10
       - image: ccistaging/android:api-30
     environment:
       JVM_OPTS: -Xmx3200m
