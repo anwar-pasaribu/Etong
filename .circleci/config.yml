@@ -18,6 +18,9 @@ jobs:
           name: Check Java Installation
           command: java -version
       - run:
+          name: Android Home Location
+          command: echo $ANDROID_HOME
+      - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
       - save_cache:
