@@ -3,10 +3,10 @@ orbs:
   android: circleci/android@2.5.0
 jobs:
   build:
-#    working_directory: ~/code
+    working_directory: ~/code
     docker:
-#      - image: cimg/openjdk:17.0.10
-      - image: cimg/android:edge
+      - image: cimg/openjdk:17.0.10
+      - image: ccistaging/android:api-30
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -15,15 +15,18 @@ jobs:
           name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
           command: sudo chmod +x ./gradlew
       - run:
+          name: Check Java Installation
+          command: java -version
+      - run:
           name: Download Dependencies
-          command: ./gradlew androidDependencies --stacktrace
+          command: ./gradlew androidDependencies
       - save_cache:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum  "composeApp/build.gradle.kts" }}
 
       # Generate apk
-      - run: ./gradlew assembleDebug
+      - run: ./gradlew assembleDebug --stacktrace
       - store_artifacts:
           path: composeApp/build/outputs/apk/
           destination: apks/
