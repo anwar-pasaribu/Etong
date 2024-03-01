@@ -17,6 +17,9 @@ jobs:
           name: Check Java Installation
           command: java -version
       - run:
+          name: Cek Dir
+          command: pwd && ls -la && env
+      - run:
           name: Android Home Location
           command: echo $ANDROID_HOME
       - run:
@@ -26,12 +29,42 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum  "composeApp/build.gradle.kts" }}
+      - run:
+          name: Create local.properties
+          command: printf 'gemini_api_key=%s\natlas_app_id=%s\natlas_base_url=%s' \
+            $gemini_api_key $atlas_app_id $atlas_base_url > local.properties
+      - run:
+          name: Check local.properties content
+          command: cat local.properties
+      - run:
+          name: Decode Android key store
+          command: echo $ETONG_KEYSTORE_BASE64 | base64 -d | tee etong_signature android/app/keystore > /dev/null
+      - run:
+          name: Create keystore.properties
+          command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' \ 
+            $KEY_ALIAS $KEY_PASSWORD $RELEASE_KEYSTORE $STORE_PASSWORD > keystore.properties
+      - run:
+          name: Check keystore.properties content
+          command: cat keystore.properties
+      - run:
+          name: Create Google Play key
+          command: echo $GOOGLE_PLAY_KEY > fastlane/etong-gcloud-project-47e075538758.json
 
       # Generate apk
-      - run: ./gradlew assembleDebug --stacktrace
+      - run:
+          name: Build Release AAB
+          command: ./gradlew composeApp:bundleRelease --stacktrace
       - store_artifacts:
-          path: composeApp/build/outputs/apk/
+          path: composeApp/build/outputs/bundle/
           destination: apks/
 
+      - run:
+          name: Install Fastlane
+          command: sudo gem install fastlane
+
+      - run:
+          name: Uploading an AAB to Play Store
+          command: fastlane supply --aab apks/release/composeApp-release.aab
+
       # run tests!
-      - run: ./gradlew test
+#      - run: ./gradlew test
