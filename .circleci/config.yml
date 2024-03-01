@@ -38,7 +38,7 @@ jobs:
           command: cat local.properties
       - run:
           name: Decode Android key store
-          command: echo $ETONG_KEYSTORE_BASE64 | base64 -d | tee etong_signature android/app/keystore > /dev/null
+          command: echo $ETONG_KEYSTORE_BASE64 | base64 -d | tee etong_signature
       - run:
           name: Create keystore.properties
           command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' \ 
