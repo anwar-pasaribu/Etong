@@ -23,3 +23,7 @@ composeApp/release
 /composeApp/default.realm.lock
 /iosApp/iosApp.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 keystore.properties
+etong_signature
+etong_signature_base64.txt
+fastlane/metadata/*
+fastlane/etong-gcloud-project-47e075538758.json
