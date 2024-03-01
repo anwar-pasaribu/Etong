@@ -41,7 +41,7 @@ jobs:
           command: echo $ETONG_KEYSTORE_BASE64 | base64 -d | tee etong_signature
       - run:
           name: Create keystore.properties
-          command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' \ 
+          command: printf 'keyAlias=%s\nkeyPassword=%s\nstoreFile=%s\nstorePassword=%s' \ 
             $KEY_ALIAS $KEY_PASSWORD $RELEASE_KEYSTORE $STORE_PASSWORD > keystore.properties
       - run:
           name: Check keystore.properties content
