@@ -124,7 +124,7 @@ android {
         applicationId = "com.unwur.etong"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 122
+        versionCode = 123
         versionName = "1.2.2"
 
         ndk {
