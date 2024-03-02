@@ -42,9 +42,23 @@ platform :android do
       build_type: 'Release'
     )
     # upload_to_play_store # Uploads the AAB built in the gradle step above
+    upload_to_play_store
+  end
+
+  lane :internal_playstore do
+    gradle(
+      task: 'clean bundle',
+      build_type: 'Release'
+    )
     upload_to_play_store(
       track: 'internal',
-      release_status: 'draft'
+      release_status: 'draft',
+      aab: 'composeApp/build/outputs/bundle/release/composeApp-release.aab',
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
     )
   end
 
@@ -62,5 +76,12 @@ platform :android do
       build_type: 'Release'
     )
     upload_to_play_store skip_upload_apk:true
+  end
+  lane :test_inc do
+    increment_version_code(
+          gradle_file_path: "composeApp/build.gradle.kts",
+          #ext_constant_name: "test"
+          #app_folder_name:"app"
+    )
   end
 end

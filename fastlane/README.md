@@ -47,6 +47,14 @@ Deploy a new version to the Google Play
 
 
 
+### android internal_playstore
+
+```sh
+[bundle exec] fastlane android internal_playstore
+```
+
+
+
 ### android clean_test_bundle_publish
 
 ```sh
@@ -59,6 +67,14 @@ Deploy a new version to the Google Play
 
 ```sh
 [bundle exec] fastlane android build_bundle_publish
+```
+
+
+
+### android test_inc
+
+```sh
+[bundle exec] fastlane android test_inc
 ```
 
 
