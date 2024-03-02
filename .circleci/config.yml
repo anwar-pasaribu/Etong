@@ -10,18 +10,10 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
+      - run: bundle install
       - run:
           name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
           command: sudo chmod +x ./gradlew
-      - run:
-          name: Check Java Installation
-          command: java -version
-      - run:
-          name: Cek Dir
-          command: pwd && ls -la && env
-      - run:
-          name: Android Home Location
-          command: echo $ANDROID_HOME
       - run:
           name: Download Dependencies
           command: ./gradlew androidDependencies
@@ -34,18 +26,12 @@ jobs:
           command: printf 'gemini_api_key=%s\natlas_app_id=%s\natlas_base_url=%s' \
             $gemini_api_key $atlas_app_id $atlas_base_url > local.properties
       - run:
-          name: Check local.properties content
-          command: cat local.properties
-      - run:
           name: Decode Android key store
           command: echo $ETONG_KEYSTORE_BASE64 | base64 -d | tee etong_signature
       - run:
           name: Create keystore.properties
           command: printf 'keyAlias=%s\nkeyPassword=%s\nstoreFile=%s\nstorePassword=%s' \ 
             $KEY_ALIAS $KEY_PASSWORD $RELEASE_KEYSTORE $STORE_PASSWORD > keystore.properties
-      - run:
-          name: Check keystore.properties content
-          command: cat keystore.properties
       - run:
           name: Create Google Play key
           command: echo $GOOGLE_PLAY_KEY > fastlane/etong-gcloud-project-47e075538758.json
@@ -63,8 +49,9 @@ jobs:
           command: sudo gem install fastlane
 
       - run:
-          name: Uploading an AAB to Play Store
-          command: fastlane supply --aab apks/release/composeApp-release.aab
+          name: Uploading an AAB to Play Store Internal
+          command: fastlane internal_playstore
+#          command: fastlane supply --aab composeApp/build/outputs/bundle/release/composeApp-release.aab
 
       # run tests!
 #      - run: ./gradlew test
