@@ -10,7 +10,6 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
-#      - run: bundle install
       - run:
           name: Chmod permissions #if permission for Gradlew Dependencies fail, use this.
           command: sudo chmod +x ./gradlew
@@ -20,7 +19,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum  "composeApp/build.gradle.kts" }}
+          key: jars-{{ .Environment.CACHE_VERSION }}-{{ checksum "build.gradle.kts" }}-{{ checksum  "composeApp/build.gradle.kts" }}
       - run:
           name: Create local.properties
           command: printf 'gemini_api_key=%s\natlas_app_id=%s\natlas_base_url=%s' \
@@ -40,9 +39,9 @@ jobs:
       - run:
           name: Build Release AAB
           command: ./gradlew composeApp:bundleRelease --stacktrace
-      - store_artifacts:
-          path: composeApp/build/outputs/bundle/
-          destination: apks/
+#      - store_artifacts:
+#          path: composeApp/build/outputs/bundle/
+#          destination: apks/
 
       - run:
           name: Install Fastlane
@@ -52,6 +51,3 @@ jobs:
           name: Uploading an AAB to Play Store Internal
           command: fastlane internal_playstore
 #          command: fastlane supply --aab composeApp/build/outputs/bundle/release/composeApp-release.aab
-
-      # run tests!
-#      - run: ./gradlew test
