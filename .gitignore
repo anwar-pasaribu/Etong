@@ -21,6 +21,7 @@ composeApp/mongodb-realm
 composeApp/release
 /composeApp/default.realm
 /composeApp/default.realm.lock
+/composeApp/google-services.json
 /iosApp/iosApp.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 keystore.properties
 etong_signature
