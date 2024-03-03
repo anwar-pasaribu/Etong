@@ -55,6 +55,14 @@ Deploy a new version to the Google Play
 
 
 
+### android distribute
+
+```sh
+[bundle exec] fastlane android distribute
+```
+
+
+
 ### android clean_test_bundle_publish
 
 ```sh

@@ -36,9 +36,9 @@ jobs:
           command: echo $GOOGLE_PLAY_KEY > fastlane/etong-gcloud-project-47e075538758.json
 
       # Generate apk
-      - run:
-          name: Build Release AAB
-          command: ./gradlew composeApp:bundleRelease --stacktrace
+#      - run:
+#          name: Build Release AAB
+#          command: ./gradlew composeApp:bundleRelease --stacktrace
 #      - store_artifacts:
 #          path: composeApp/build/outputs/bundle/
 #          destination: apks/
@@ -49,5 +49,5 @@ jobs:
 
       - run:
           name: Uploading an AAB to Play Store Internal
-          command: fastlane internal_playstore
+          command: fastlane distribute
 #          command: fastlane supply --aab composeApp/build/outputs/bundle/release/composeApp-release.aab

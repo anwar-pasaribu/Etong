@@ -52,7 +52,7 @@ platform :android do
     )
     upload_to_play_store(
       track: 'internal',
-      release_status: 'draft',
+      release_status: 'completed',
       aab: 'composeApp/build/outputs/bundle/release/composeApp-release.aab',
       skip_upload_apk: true,
       skip_upload_metadata: true,
@@ -60,6 +60,21 @@ platform :android do
       skip_upload_images: true,
       skip_upload_screenshots: true,
     )
+  end
+
+  lane :distribute do
+      build_android_app(task: "clean bundle", build_type: 'Release')
+      # build_android_app is a built-in fastlane action.
+      release = firebase_app_distribution(
+          app: '1:991837468353:android:858f974ce5c72dec748640',
+          testers: 'anwar_pasaribu@live.com',
+          groups: 'Devs',
+          debug: true,
+          release_notes: 'Lots of amazing new features to test out',
+          android_artifact_type: 'AAB',
+          android_artifact_path: 'composeApp/build/outputs/bundle/release/composeApp-release.aab',
+          firebase_cli_token: '1//0gWoEkUozE6NnCgYIARAAGBASNwF-L9IrAnhPTf_MxSjsVXzfm1CEPcJ55OK3WMYcod8zvZYI0p0gBd0zlZUxs2Stukw4yKgtgTU'
+      )
   end
 
   lane :clean_test_bundle_publish do
