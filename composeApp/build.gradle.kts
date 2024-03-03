@@ -31,6 +31,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            binaryOption("bundleId", "com.unwur.etong.shared")
         }
     }
 
@@ -239,4 +240,8 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         target("**/*.gradle.kts")
         ktlint()
     }
+}
+
+task("testClasses").doLast {
+    println("This is a dummy testClasses task")
 }
