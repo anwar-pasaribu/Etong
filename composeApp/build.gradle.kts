@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.realm)
     alias(libs.plugins.buildkonfig)
     alias(libs.plugins.spotless)
+    alias(libs.plugins.googleServices)
+    alias(libs.plugins.firebaseCrashlytics)
 }
 
 kotlin {
@@ -50,6 +52,9 @@ kotlin {
 
             // File picker
             implementation(libs.calf.filepicker)
+
+            implementation(project.dependencies.platform("com.google.firebase:firebase-bom:32.7.3"))
+            implementation("com.google.firebase:firebase-crashlytics")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -125,8 +130,8 @@ android {
         applicationId = "com.unwur.etong"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 125
-        versionName = "1.2.5"
+        versionCode = 126
+        versionName = "1.2.6"
 
         ndk {
             abiFilters.add("armeabi-v7a")
@@ -137,12 +142,12 @@ android {
         getByName("debug") {
             isMinifyEnabled = false
             isShrinkResources = false
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pros")
         }
         getByName("release") {
             isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            isShrinkResources = false
+            // proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pros")
             signingConfig = signingConfigs.getByName("release")
         }
     }

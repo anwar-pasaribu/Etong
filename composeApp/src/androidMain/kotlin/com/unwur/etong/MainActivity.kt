@@ -34,6 +34,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.Firebase
+import com.google.firebase.initialize
 import ui.InputCardDetail
 import ui.InputPaidAmountDetail
 import ui.PaidAmountView
@@ -42,6 +44,7 @@ import ui.theme.EtongTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        Firebase.initialize(this)
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(
                 lightScrim = getColor(R.color.etongPrimary),
