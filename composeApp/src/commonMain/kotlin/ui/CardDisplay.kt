@@ -40,12 +40,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import etong.composeapp.generated.resources.Res
+import etong.composeapp.generated.resources.btn_delete_card
 import model.CardUiModel
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun CardContextMenu(
     modifier: Modifier = Modifier,
@@ -53,7 +56,7 @@ fun CardContextMenu(
 ) {
 
     var expanded by remember { mutableStateOf(false) }
-    val items = listOf("Hapus Kartu")
+    val items = listOf(stringResource(Res.string.btn_delete_card))
 
     Box(
         modifier = modifier
@@ -120,20 +123,13 @@ fun CreditCardItem(
                 modifier = Modifier.height(32.dp).fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (cardUiModel.cardLogo.isEmpty()) {
-                    Icon(modifier = Modifier.height(24.dp),
-                        imageVector = Icons.Filled.CreditCard,
-                        contentDescription = ""
-                    )
-                } else {
-                    Image(
-                        modifier = Modifier.height(24.dp),
-                        alignment = Alignment.CenterStart,
-                        painter = painterResource(DrawableResource(cardUiModel.cardLogo)),
-                        contentScale = ContentScale.FillHeight,
-                        contentDescription = "null"
-                    )
-                }
+                Image(
+                    modifier = Modifier.height(24.dp),
+                    alignment = Alignment.CenterStart,
+                    painter = painterResource(cardUiModel.cardLogo.resource),
+                    contentScale = ContentScale.FillHeight,
+                    contentDescription = cardUiModel.cardType.name
+                )
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = cardUiModel.cardLabel

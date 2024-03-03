@@ -6,6 +6,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import model.CardLogo
 import model.CardUiModel
 import model.mapper.toDbInstance
 import model.mapper.toUiModel
@@ -64,7 +65,7 @@ class CardScreenModel(
                             billMinAmount = cardList.sumOf { it.billMinAmount },
                             billDueDate = 0L,
                             billingDate = 0L,
-                            cardLogo = "",
+                            cardLogo = CardLogo.genericLogo(),
                             cardType = CardType.UNKNOWN
                         )
                     )

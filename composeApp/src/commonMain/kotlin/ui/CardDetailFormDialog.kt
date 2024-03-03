@@ -32,6 +32,7 @@ import androidx.compose.ui.window.DialogProperties
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import model.CardLogo
 import model.CardUiModel
 import ui.component.BackButton
 import utils.cardutils.CardType
@@ -137,7 +138,7 @@ fun InputCardDetail(
                             billDueDate = dueDateMillis,
                             billingDate = 0L,
                             cardType = CardType.valueOf(cardTypeString),
-                            cardLogo = ""
+                            cardLogo = CardLogo.genericLogo()
                         )
                         onSubmitRequest(cardDetail)
                         onDismissRequest()

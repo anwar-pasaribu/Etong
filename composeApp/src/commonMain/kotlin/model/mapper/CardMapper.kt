@@ -1,13 +1,23 @@
 package model.mapper
 
+import etong.composeapp.generated.resources.Res
+import etong.composeapp.generated.resources.american_express
+import etong.composeapp.generated.resources.baseline_credit_card_24
+import etong.composeapp.generated.resources.dinners_club
+import etong.composeapp.generated.resources.discover
+import etong.composeapp.generated.resources.jcb
+import etong.composeapp.generated.resources.maestro
+import etong.composeapp.generated.resources.mastercard
+import etong.composeapp.generated.resources.visa
 import io.realm.kotlin.types.RealmUUID
+import model.CardLogo
 import model.CardPaymentUiModel
 import model.CardUiModel
 import model.storage.Card
 import model.storage.CardPayment
+import org.jetbrains.compose.resources.ExperimentalResourceApi
 import utils.cardutils.CardType
 import utils.cardutils.identifyCardTypeFromCardTypeEnumName
-import utils.cardutils.identifyCardTypeFromNumber
 
 fun CardUiModel.toDbInstance() : Card {
 
@@ -27,17 +37,18 @@ fun CardUiModel.toDbInstance() : Card {
 }
 
 
+@OptIn(ExperimentalResourceApi::class)
 fun Card.toUiModel() : CardUiModel {
     val cardType = identifyCardTypeFromCardTypeEnumName(this.cardType)
     val cardLogo = when(cardType) {
-        CardType.VISA -> { "visa.png" }
-        CardType.JCB -> { "jcb.png" }
-        CardType.MASTERCARD -> { "mastercard.png" }
-        CardType.MAESTRO -> { "maestro.png" }
-        CardType.AMERICAN_EXPRESS -> { "american_express.png" }
-        CardType.DINNERS_CLUB -> { "dinners_club.png" }
-        CardType.DISCOVER -> { "discover.png" }
-        else -> { "" }
+        CardType.VISA -> { CardLogo.cardLogoResource(Res.drawable.visa) }
+        CardType.JCB -> { CardLogo.cardLogoResource(Res.drawable.jcb) }
+        CardType.MASTERCARD -> { CardLogo.cardLogoResource(Res.drawable.mastercard) }
+        CardType.MAESTRO -> { CardLogo.cardLogoResource(Res.drawable.maestro) }
+        CardType.AMERICAN_EXPRESS -> { CardLogo.cardLogoResource(Res.drawable.american_express) }
+        CardType.DINNERS_CLUB -> { CardLogo.cardLogoResource(Res.drawable.dinners_club) }
+        CardType.DISCOVER -> { CardLogo.cardLogoResource(Res.drawable.discover) }
+        else -> { CardLogo.cardLogoResource(Res.drawable.baseline_credit_card_24) }
     }
 
     return CardUiModel(

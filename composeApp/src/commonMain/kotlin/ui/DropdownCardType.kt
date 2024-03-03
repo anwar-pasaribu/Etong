@@ -48,13 +48,13 @@ fun DropdownCardTypeSection(
 ) {
     val cards = listOf(
         Triple(CardType.UNKNOWN, "Pilih Jenis Kartu", ""),
-        Triple(CardType.VISA, "Visa", "visa.png"),
-        Triple(CardType.MASTERCARD, "Mastercard", "mastercard.png"),
-        Triple(CardType.JCB, "JCB", "jcb.png"),
-        Triple(CardType.AMERICAN_EXPRESS, "American Express", "american_express.png"),
-        Triple(CardType.DISCOVER, "Discover", "discover.png"),
-        Triple(CardType.DINNERS_CLUB, "Dinners Club", "dinners_club.png"),
-        Triple(CardType.MAESTRO, "Maestro", "maestro.png"),
+        Triple(CardType.VISA, "Visa", "drawable/visa.png"),
+        Triple(CardType.MASTERCARD, "Mastercard", "drawable/mastercard.png"),
+        Triple(CardType.JCB, "JCB", "drawable/jcb.png"),
+        Triple(CardType.AMERICAN_EXPRESS, "American Express", "drawable/american_express.png"),
+        Triple(CardType.DISCOVER, "Discover", "drawable/discover.png"),
+        Triple(CardType.DINNERS_CLUB, "Dinners Club", "drawable/dinners_club.png"),
+        Triple(CardType.MAESTRO, "Maestro", "drawable/maestro.png"),
     )
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
