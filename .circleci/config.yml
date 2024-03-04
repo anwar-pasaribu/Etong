@@ -34,6 +34,13 @@ jobs:
       - run:
           name: Create Google Play key
           command: echo $GOOGLE_PLAY_KEY > fastlane/etong-gcloud-project-47e075538758.json
+      - run:
+          name: Create Google Services JSON
+          command: echo $GOOGLE_SERVICES_JSON > composeApp/google-services.json
+      - run:
+          name: Create Fastlane Environment Variable
+          command: printf 'FIREBASE_ETONG_APP_ID_RELEASE=%s\nFIREBASE_ETONG_CLI_TOKEN=%s' \
+            $FIREBASE_ETONG_APP_ID_RELEASE $FIREBASE_ETONG_CLI_TOKEN > fastlane/.env
 
       # Generate apk
 #      - run:
@@ -49,5 +56,5 @@ jobs:
 
       - run:
           name: Uploading an AAB to Play Store Internal
-          command: fastlane distribute
+          command: bundle exec fastlane distribute
 #          command: fastlane supply --aab composeApp/build/outputs/bundle/release/composeApp-release.aab
