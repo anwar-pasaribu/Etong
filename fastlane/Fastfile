@@ -66,14 +66,14 @@ platform :android do
       build_android_app(task: "clean bundle", build_type: 'Release')
       # build_android_app is a built-in fastlane action.
       release = firebase_app_distribution(
-          app: '1:991837468353:android:858f974ce5c72dec748640',
+          app: ENV['FIREBASE_ETONG_APP_ID_RELEASE'],
           testers: 'anwar_pasaribu@live.com',
           groups: 'Devs',
           debug: true,
           release_notes: 'Lots of amazing new features to test out',
           android_artifact_type: 'AAB',
           android_artifact_path: 'composeApp/build/outputs/bundle/release/composeApp-release.aab',
-          firebase_cli_token: '1//0gWoEkUozE6NnCgYIARAAGBASNwF-L9IrAnhPTf_MxSjsVXzfm1CEPcJ55OK3WMYcod8zvZYI0p0gBd0zlZUxs2Stukw4yKgtgTU'
+          firebase_cli_token: ENV['FIREBASE_ETONG_CLI_TOKEN']
       )
   end
 
