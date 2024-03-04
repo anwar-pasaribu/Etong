@@ -61,6 +61,14 @@ import dev.chrisbanes.haze.hazeChild
 import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
 import dev.chrisbanes.haze.materials.HazeMaterials
 import di.EtongAppDI
+import etong.composeapp.generated.resources.Res
+import etong.composeapp.generated.resources.btn_logout
+import etong.composeapp.generated.resources.content_desc_add_card
+import etong.composeapp.generated.resources.label_empty_no_card
+import etong.composeapp.generated.resources.label_home
+import etong.composeapp.generated.resources.msg_confirm_logout
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.stringResource
 import ui.ConfirmDialog
 import ui.CreditCardItem
 import ui.InputCardDetail
@@ -73,7 +81,7 @@ class CardListScreen : Screen {
 
     override val key: ScreenKey = uniqueScreenKey
 
-    @OptIn(ExperimentalHazeMaterialsApi::class)
+    @OptIn(ExperimentalHazeMaterialsApi::class, ExperimentalResourceApi::class)
     @Composable
     override fun Content() {
         val cardScreenModel = rememberScreenModel { EtongAppDI.cardScreenModel }
@@ -94,7 +102,7 @@ class CardListScreen : Screen {
                             style = HazeMaterials.thin(MaterialTheme.colorScheme.background)
                         ),
                     colors = TopAppBarDefaults.topAppBarColors(Color.Transparent),
-                    title = { Text("Home") },
+                    title = { Text(stringResource(Res.string.label_home)) },
                     actions = {
                         IconButton(
                             modifier = Modifier.size(32.dp, 32.dp),
@@ -137,7 +145,7 @@ class CardListScreen : Screen {
                         content = {
                             Icon(
                                 imageVector = Icons.Filled.Add,
-                                contentDescription = "Add new card",
+                                contentDescription = stringResource(Res.string.content_desc_add_card),
                             )
                         }
                     )
@@ -179,7 +187,7 @@ class CardListScreen : Screen {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "Tidak ada Kartu, tekan tombol + untuk menambah.",
+                                text = stringResource(Res.string.label_empty_no_card),
                                 modifier = Modifier.padding(16.dp),
                                 style = MaterialTheme.typography.bodyLarge,
                                 textAlign = TextAlign.Center
@@ -223,8 +231,8 @@ class CardListScreen : Screen {
 
             confirmLogoutDialogVisible.value -> {
                 ConfirmDialog(
-                    message = "Kamu mau logout dari aplikasi?",
-                    positiveActionText = "Logout",
+                    message = stringResource(Res.string.msg_confirm_logout),
+                    positiveActionText = stringResource(Res.string.btn_logout),
                     onPositiveAction = {
                         navigator.replaceAll(UserEnteringScreen(logoutRequested = true))
                     },

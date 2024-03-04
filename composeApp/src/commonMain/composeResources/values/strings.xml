@@ -1,4 +1,9 @@
 <resources>
+    <string name="label_home">Home</string>
     <string name="label_idr">Rp</string>
+    <string name="label_empty_no_card">Tidak ada Kartu, tekan tombol + untuk menambah.</string>
     <string name="btn_delete_card">Hapus Kartu</string>
+    <string name="btn_logout">Logout</string>
+    <string name="content_desc_add_card">Add new card</string>
+    <string name="msg_confirm_logout">Kamu mau logout dari aplikasi?</string>
 </resources>
