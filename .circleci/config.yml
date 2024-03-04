@@ -56,5 +56,5 @@ jobs:
 
       - run:
           name: Uploading an AAB to Play Store Internal
-          command: bundle exec fastlane distribute
+          command: fastlane distribute
 #          command: fastlane supply --aab composeApp/build/outputs/bundle/release/composeApp-release.aab
