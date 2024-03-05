@@ -29,7 +29,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import com.mohamedrejeb.calf.io.readByteArray
 import com.mohamedrejeb.calf.picker.FilePickerFileType
 import com.mohamedrejeb.calf.picker.FilePickerSelectionMode
 import com.mohamedrejeb.calf.picker.rememberFilePickerLauncher
@@ -45,7 +44,7 @@ actual fun ImagePicker(onResult: (ByteArray?) -> Unit) {
         selectionMode = FilePickerSelectionMode.Single,
         onResult = { files ->
             coroutineScope.launch(Dispatchers.IO) {
-                onResult(files.firstOrNull()?.readByteArray())
+                //onResult(files.firstOrNull()?.readByteArray())
             }
         },
     )

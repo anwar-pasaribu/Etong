@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Send
@@ -26,6 +27,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,11 +35,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import com.mohamedrejeb.calf.core.LocalPlatformContext
+import com.mohamedrejeb.calf.io.readByteArray
+import com.mohamedrejeb.calf.picker.FilePickerFileType
+import com.mohamedrejeb.calf.picker.FilePickerSelectionMode
+import com.mohamedrejeb.calf.picker.rememberFilePickerLauncher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import utils.ImagePicker
 import utils.toComposeImageBitmap
 
 @Composable
@@ -48,7 +56,18 @@ fun MessageInput(
     var userMessage by rememberSaveable { mutableStateOf("") }
     var selectedImage by remember { mutableStateOf<ByteArray?>(null) }
     var selectedImageBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
-    var showImagePicker by remember { mutableStateOf(false) }
+
+    val scope = rememberCoroutineScope()
+    val context = LocalPlatformContext.current
+    val pickerLauncher = rememberFilePickerLauncher(
+        type = FilePickerFileType.Image,
+        selectionMode = FilePickerSelectionMode.Single,
+        onResult = { files ->
+            scope.launch {
+                selectedImage = files.firstOrNull()?.readByteArray(context)
+            }
+        }
+    )
 
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
@@ -85,10 +104,18 @@ fun MessageInput(
                     onValueChange = { userMessage = it },
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences,
+                        imeAction = ImeAction.Send
                     ),
+                    keyboardActions = KeyboardActions(onSend = {
+                        if (userMessage.isNotBlank()) {
+                            onSendMessage(userMessage, selectedImage)
+                            userMessage = ""
+                            selectedImage = null
+                        }
+                    }),
                     leadingIcon = if (selectedImageBitmap == null) {
                         {
-                            IconButton(onClick = { showImagePicker = true }) {
+                            IconButton(onClick = { pickerLauncher.launch() }) {
                                 Icon(Icons.Rounded.AttachFile, "Attach Image File")
                             }
                         }
@@ -115,13 +142,6 @@ fun MessageInput(
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
-        }
-    }
-
-    if (showImagePicker) {
-        ImagePicker {
-            selectedImage = it
-            showImagePicker = false
         }
     }
 
