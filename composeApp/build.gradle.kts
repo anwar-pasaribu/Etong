@@ -97,6 +97,9 @@ kotlin {
 
             implementation("dev.chrisbanes.haze:haze:0.5.3")
             implementation("dev.chrisbanes.haze:haze-materials:0.5.3")
+
+            // File picker
+            implementation(libs.calf.filepicker)
         }
     }
 }
@@ -130,8 +133,8 @@ android {
         applicationId = "com.unwur.etong"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 127
-        versionName = "1.2.7"
+        versionCode = 128
+        versionName = "1.2.8"
 
         ndk {
             abiFilters.add("armeabi-v7a")
