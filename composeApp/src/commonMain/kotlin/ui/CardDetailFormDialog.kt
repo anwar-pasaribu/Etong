@@ -67,7 +67,7 @@ fun InputCardDetail(
                     Spacer(Modifier.height(16.dp))
 
                     var cardLabel by remember { mutableStateOf("") }
-                    var cardTypeString by remember { mutableStateOf("") }
+                    var cardTypeString by remember { mutableStateOf(CardType.VISA.name) }
                     var billAmount by remember { mutableStateOf("") }
                     var billMinAmount by remember { mutableStateOf("") }
 
