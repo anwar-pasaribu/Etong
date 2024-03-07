@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">Etong</string>
     <string name="label_home">Home</string>
     <string name="label_idr">Rp</string>
     <string name="label_empty_no_card">Tidak ada Kartu, tekan tombol + untuk menambah.</string>
