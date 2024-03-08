@@ -2,7 +2,7 @@ package ui
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -20,17 +20,16 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.until
-import model.CardUiModel
 import kotlin.math.absoluteValue
 
 @Composable
-fun DueDateView(cardUiModel: CardUiModel) {
-    Row(modifier = Modifier.fillMaxHeight()) {
+fun DueDateView(modifier: Modifier = Modifier, billDueDate: Long) {
+    Row(modifier = modifier) {
         val tz = TimeZone.currentSystemDefault()
 
         val todate = Clock.System.now().toLocalDateTime(tz).date
 
-        val dueDateInstant = Instant.fromEpochMilliseconds(cardUiModel.billDueDate)
+        val dueDateInstant = Instant.fromEpochMilliseconds(billDueDate)
         val dueDate = dueDateInstant.toLocalDateTime(tz).date
         val dueDateInDays = todate.until(dueDate, DateTimeUnit.DAY)
 
@@ -44,7 +43,7 @@ fun DueDateView(cardUiModel: CardUiModel) {
 
         val late = dueDateInDays < 0
 
-        Text(modifier = Modifier.align(Alignment.Bottom), text = "$humanReadableDate")
+        Text(modifier = Modifier.align(Alignment.Bottom), text = humanReadableDate)
         Spacer(modifier = Modifier.width(16.dp))
 
         val formattedDueDateReadable = if (dueDateInDays == 1) {
