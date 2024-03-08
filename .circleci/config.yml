@@ -42,19 +42,16 @@ jobs:
           command: printf 'FIREBASE_ETONG_APP_ID_RELEASE=%s\nFIREBASE_ETONG_CLI_TOKEN=%s' \
             $FIREBASE_ETONG_APP_ID_RELEASE $FIREBASE_ETONG_CLI_TOKEN > fastlane/.env
 
-      # Generate apk
+      - run:
+          name: Test Composable Component `./gradlew desktopTest`
+          command: ./gradlew desktopTest
+
 #      - run:
-#          name: Build Release AAB
-#          command: ./gradlew composeApp:bundleRelease --stacktrace
-#      - store_artifacts:
-#          path: composeApp/build/outputs/bundle/
-#          destination: apks/
-
-      - run:
-          name: Install Fastlane
-          command: sudo gem install fastlane
-
-      - run:
-          name: Uploading an AAB to Play Store Internal
-          command: fastlane distribute
-#          command: fastlane supply --aab composeApp/build/outputs/bundle/release/composeApp-release.aab
+#          name: Install Fastlane
+#          command: sudo gem install fastlane
+#      - run:
+#          name: Uploading an AAB to Firebase App Distribution
+#          command: fastlane distribute
+#      - run:
+#          name: Uploading an AAB to Playstore (Internal)
+#          command: fastlane internal_playstore
