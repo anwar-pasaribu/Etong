@@ -13,6 +13,7 @@ import model.CardUiModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import utils.cardutils.CardType
 
+@Suppress("HardCodedStringLiteral")
 @OptIn(ExperimentalResourceApi::class)
 class CardItemProvider: PreviewParameterProvider<CardUiModel> {
     override val values: Sequence<CardUiModel>
