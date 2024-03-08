@@ -10,8 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import etong.composeapp.generated.resources.Res
+import etong.composeapp.generated.resources.label_idr
 import formatNominal
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.stringResource
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun CurrencyAmountDisplay(modifier: Modifier = Modifier, amount: Double = 0.0) {
     Row(
@@ -19,7 +24,7 @@ fun CurrencyAmountDisplay(modifier: Modifier = Modifier, amount: Double = 0.0) {
         horizontalArrangement = Arrangement.Start
     ) {
         Text(
-            text = "Rp",
+            text = stringResource(Res.string.label_idr),
             modifier = Modifier.alignByBaseline(),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Light,
