@@ -6,10 +6,8 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
-import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.currentOrThrow
-import cafe.adriel.voyager.transitions.FadeTransition
+import cafe.adriel.voyager.transitions.CrossfadeTransition
 import cafe.adriel.voyager.transitions.SlideTransition
 import config.PlatformType
 import di.EtongAppDI
@@ -21,8 +19,6 @@ class HomeScreen: Screen {
     override val key: ScreenKey = uniqueScreenKey
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-
         val screenModel = rememberScreenModel { EtongAppDI.homeScreenModel }
         val state = remember { screenModel.state }
 
@@ -35,11 +31,11 @@ class HomeScreen: Screen {
                         if (supportSwipeBack) {
                             SlideTransition(navigator = appNavigator)
                         } else {
-                            FadeTransition(navigator = appNavigator)
+                            CrossfadeTransition(navigator = appNavigator)
                         }
                     }
                 } else {
-                    navigator.replaceAll(UserEnteringScreen())
+                    Navigator(UserEnteringScreen())
                 }
             }
 
