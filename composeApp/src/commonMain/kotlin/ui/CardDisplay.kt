@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import etong.composeapp.generated.resources.Res
 import etong.composeapp.generated.resources.btn_delete_card
@@ -181,7 +182,10 @@ fun TotalBillCardItem(
                 )
             }
 
-            CurrencyAmountDisplay(amount = cardUiModel.billMinAmount)
+            CurrencyAmountDisplay(
+                modifier = Modifier.testTag("test-min-amount"),
+                amount = cardUiModel.billMinAmount
+            )
 
             Spacer(Modifier.height(8.dp))
 
@@ -200,7 +204,10 @@ fun TotalBillCardItem(
                 )
             }
 
-            CurrencyAmountDisplay(amount = cardUiModel.billAmount)
+            CurrencyAmountDisplay(
+                modifier = Modifier.testTag("test-full-amount"),
+                amount = cardUiModel.billAmount
+            )
         }
     }
 }

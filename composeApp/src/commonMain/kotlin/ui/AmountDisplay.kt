@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import etong.composeapp.generated.resources.Res
@@ -32,7 +33,7 @@ fun CurrencyAmountDisplay(modifier: Modifier = Modifier, amount: Double = 0.0) {
         Spacer(modifier = Modifier.width(6.dp))
         Text(
             text = amount.formatNominal,
-            modifier = Modifier.alignByBaseline(),
+            modifier = Modifier.alignByBaseline().testTag("test-formatted-number"),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.ExtraBold,
         )
