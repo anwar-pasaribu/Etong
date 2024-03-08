@@ -58,8 +58,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
-import dev.chrisbanes.haze.materials.ExperimentalHazeMaterialsApi
-import dev.chrisbanes.haze.materials.HazeMaterials
 import di.EtongAppDI
 import etong.composeapp.generated.resources.Res
 import etong.composeapp.generated.resources.btn_logout
@@ -81,7 +79,7 @@ class CardListScreen : Screen {
 
     override val key: ScreenKey = uniqueScreenKey
 
-    @OptIn(ExperimentalHazeMaterialsApi::class, ExperimentalResourceApi::class)
+    @OptIn(ExperimentalResourceApi::class)
     @Composable
     override fun Content() {
         val cardScreenModel = rememberScreenModel { EtongAppDI.cardScreenModel }
@@ -97,10 +95,7 @@ class CardListScreen : Screen {
                 TopAppBar(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .hazeChild(
-                            state = hazeState,
-                            style = HazeMaterials.thin(MaterialTheme.colorScheme.background)
-                        ),
+                        .hazeChild(state = hazeState),
                     colors = TopAppBarDefaults.topAppBarColors(Color.Transparent),
                     title = { Text(stringResource(Res.string.label_home)) },
                     actions = {
