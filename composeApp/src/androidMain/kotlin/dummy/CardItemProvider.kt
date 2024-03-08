@@ -6,10 +6,8 @@ import etong.composeapp.generated.resources.visa
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
-import kotlinx.datetime.todayIn
 import model.CardLogo
 import model.CardUiModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -19,7 +17,6 @@ import utils.cardutils.CardType
 class CardItemProvider: PreviewParameterProvider<CardUiModel> {
     override val values: Sequence<CardUiModel>
         get() {
-            val today: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault())
             val currentMoment: Instant = Clock.System.now()
 
             return sequenceOf(
