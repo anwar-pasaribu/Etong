@@ -8,7 +8,6 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -33,6 +32,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import ui.extension.bouncingClickable
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
@@ -115,13 +115,11 @@ fun DropdownSection(
         modifier = modifier.then(
             Modifier
                 .clip(MaterialTheme.shapes.small)
-                .clickable(
-                    onClick = {
-                        focusManager.clearFocus()
-                        keyboardController?.hide()
-                        expanded = true
-                    }
-                )
+                .bouncingClickable {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                    expanded = true
+                }
                 .background(
                     MaterialTheme.colorScheme.onPrimary,
                     MaterialTheme.shapes.small

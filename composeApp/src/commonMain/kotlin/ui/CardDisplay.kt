@@ -1,10 +1,7 @@
 package ui
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -44,8 +42,9 @@ import etong.composeapp.generated.resources.Res
 import etong.composeapp.generated.resources.btn_delete_card
 import model.CardUiModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import ui.component.ImageWrapper
+import ui.extension.bouncingClickable
 
 
 @OptIn(ExperimentalResourceApi::class)
@@ -87,18 +86,15 @@ fun CardContextMenu(
             }
         }
     }
-
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalResourceApi::class)
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun CreditCardItem(
     modifier: Modifier = Modifier,
     cardUiModel: CardUiModel,
     onCardClicked: (CardUiModel) -> Unit,
 ) {
-    var selectedCard by remember { mutableStateOf(false) }
-
     val gradient = if (isSystemInDarkTheme()) {
         Brush.horizontalGradient(listOf(Color(0xFF004440), Color(0xFF00312e)))
     } else {
@@ -106,37 +102,37 @@ fun CreditCardItem(
     }
 
     Card(
-        modifier = modifier.then(Modifier.fillMaxWidth().heightIn(min = 120.dp, max = 160.dp)),
+        modifier = modifier.then(
+            Modifier.fillMaxWidth()
+                .heightIn(min = 120.dp, max = 160.dp)
+                .bouncingClickable(
+                    onClick = { onCardClicked(cardUiModel)},
+                )
+        ),
         elevation = CardDefaults.elevatedCardElevation(0.dp),
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         shape = MaterialTheme.shapes.medium,
     ) {
-        Column(
-            modifier = Modifier.background(gradient).combinedClickable(
-                onClick = {
-                    selectedCard = !selectedCard
-                    onCardClicked(cardUiModel)
-                }
-            ).padding(all = 8.dp).fillMaxHeight()
+        Box(
+            modifier = Modifier.background(gradient).padding(all = 8.dp).fillMaxSize()
         ) {
             Row(
-                modifier = Modifier.height(32.dp).fillMaxWidth(),
+                modifier = Modifier.height(32.dp).fillMaxWidth().align(Alignment.TopStart),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
+                ImageWrapper(
                     modifier = Modifier.height(24.dp),
                     alignment = Alignment.CenterStart,
-                    painter = painterResource(cardUiModel.cardLogo.resource),
+                    resource = cardUiModel.cardLogo.resource,
                     contentScale = ContentScale.FillHeight,
                     contentDescription = cardUiModel.cardType.name
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(
-                    text = cardUiModel.cardLabel
-                )
+                Text(text = cardUiModel.cardLabel)
             }
-
-            Row(modifier = Modifier.padding(top = 8.dp).fillMaxWidth()) {
+            Row(
+                modifier = Modifier.padding(top = 8.dp).fillMaxWidth().align(Alignment.CenterStart),
+            ) {
                 CurrencyAmountDisplay(
                     modifier = Modifier.weight(1F),
                     amount = cardUiModel.billMinAmount
@@ -147,7 +143,10 @@ fun CreditCardItem(
                     )
                 }
             }
-            DueDateView(cardUiModel)
+            DueDateView(
+                modifier = Modifier.align(Alignment.BottomStart),
+                billDueDate = cardUiModel.billDueDate
+            )
         }
     }
 }
@@ -161,7 +160,6 @@ fun TotalBillCardItem(
     Card(
         modifier = modifier.then(Modifier.fillMaxWidth().heightIn(min = 120.dp, max = 256.dp)),
         elevation = CardDefaults.cardElevation(0.dp),
-        shape = MaterialTheme.shapes.medium,
         border = BorderStroke(width = 0.dp, color = Color.Transparent),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
@@ -172,7 +170,8 @@ fun TotalBillCardItem(
                 modifier = Modifier.height(32.dp).fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(modifier = Modifier.height(24.dp),
+                Icon(
+                    modifier = Modifier.height(24.dp),
                     imageVector = Icons.Filled.CreditCard,
                     contentDescription = ""
                 )
@@ -182,9 +181,7 @@ fun TotalBillCardItem(
                 )
             }
 
-            CurrencyAmountDisplay(
-                amount = cardUiModel.billMinAmount
-            )
+            CurrencyAmountDisplay(amount = cardUiModel.billMinAmount)
 
             Spacer(Modifier.height(8.dp))
 
@@ -192,7 +189,8 @@ fun TotalBillCardItem(
                 modifier = Modifier.height(32.dp).fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(modifier = Modifier.height(24.dp),
+                Icon(
+                    modifier = Modifier.height(24.dp),
                     imageVector = Icons.Filled.CreditCard,
                     contentDescription = ""
                 )
@@ -202,9 +200,7 @@ fun TotalBillCardItem(
                 )
             }
 
-            CurrencyAmountDisplay(
-                amount = cardUiModel.billAmount
-            )
+            CurrencyAmountDisplay(amount = cardUiModel.billAmount)
         }
     }
 }
