@@ -1,9 +1,9 @@
 package usecase
 
-import repository.CardRepository
+import repository.CardRepositoryInterface
 
 class ObserveCardPaymentListUseCase(
-    private val repository: CardRepository
+    private val repository: CardRepositoryInterface
 ) {
     suspend operator fun invoke(cardIdString: String)
         = repository.cardPaymentListObserver(cardIdString)

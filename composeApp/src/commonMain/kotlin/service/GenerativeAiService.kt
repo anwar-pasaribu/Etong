@@ -42,7 +42,7 @@ class GenerativeAiService private constructor(
 
     companion object {
         @Suppress("ktlint:standard:property-naming")
-        var GEMINI_API_KEY = BuildKonfig.GEMINI_API_KEY
+        private var GEMINI_API_KEY = BuildKonfig.GEMINI_API_KEY
 
         val instance: GenerativeAiService by lazy {
             GenerativeAiService(

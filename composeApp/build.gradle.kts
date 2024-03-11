@@ -69,6 +69,8 @@ kotlin {
 
             implementation(project.dependencies.platform("com.google.firebase:firebase-bom:32.7.3"))
             implementation("com.google.firebase:firebase-crashlytics")
+
+            implementation(libs.koin.android)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -114,6 +116,11 @@ kotlin {
 
             // File picker
             implementation(libs.calf.filepicker)
+
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+
+            implementation(libs.koin.test)
         }
 
         commonTest.dependencies {

@@ -6,29 +6,29 @@ import model.storage.CardPayment
 
 class CardRepository(
     private val etongDatasource: EtongDatasource
-) {
+): CardRepositoryInterface {
 
-    val cardListObserver = etongDatasource.cardObservable()
+    override val cardListObserver = etongDatasource.cardObservable()
 
-    suspend fun cardPaymentListObserver(cardIdString: String)
+    override fun cardPaymentListObserver(cardIdString: String)
         = etongDatasource.cardPaymentObservable(cardIdString)
 
-    suspend fun tryAddCardToDb(newCard: Card) = etongDatasource.tryAddCardToDb(newCard)
+    override suspend fun tryAddCardToDb(newCard: Card) = etongDatasource.tryAddCardToDb(newCard)
 
-    suspend fun tryDeleteCard(card: Card) = etongDatasource.tryDeleteCard(card)
-    suspend fun tryAddCardPaymentToDb(
+    override suspend fun tryDeleteCard(card: Card) = etongDatasource.tryDeleteCard(card)
+    override suspend fun tryAddCardPaymentToDb(
         newCardPayment: CardPayment
     ) = etongDatasource.tryAddCardPaymentToDb(newCardPayment)
 
-    fun pauseCardSync() {
+    override fun pauseCardSync() {
         etongDatasource.pauseSync()
     }
 
-    fun resumeCardSync() {
+    override fun resumeCardSync() {
         etongDatasource.resumeSync()
     }
 
-    suspend fun reloadRealm() {
+    override suspend fun reloadRealm() {
         etongDatasource.reloadRealm()
     }
 

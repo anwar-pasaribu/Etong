@@ -1,9 +1,9 @@
 package usecase
 
-import repository.CardRepository
+import repository.CardRepositoryInterface
 
 class ToggleOnOffSyncUseCase(
-    private val repository: CardRepository
+    private val repository: CardRepositoryInterface
 ) {
     operator fun invoke(on: Boolean) {
         if (on) {

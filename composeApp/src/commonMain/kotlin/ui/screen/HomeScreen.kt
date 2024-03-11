@@ -2,7 +2,6 @@ package ui.screen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
@@ -10,8 +9,8 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.CrossfadeTransition
 import cafe.adriel.voyager.transitions.SlideTransition
 import config.PlatformType
-import di.EtongAppDI
 import getPlatform
+import org.koin.compose.koinInject
 import viewmodel.HomeScreenModel
 
 class HomeScreen: Screen {
@@ -19,7 +18,7 @@ class HomeScreen: Screen {
     override val key: ScreenKey = uniqueScreenKey
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel { EtongAppDI.homeScreenModel }
+        val screenModel = koinInject<HomeScreenModel>()
         val state = remember { screenModel.state }
 
         when (val currentState = state.value) {

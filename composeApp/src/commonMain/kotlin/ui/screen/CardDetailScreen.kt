@@ -28,14 +28,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import di.EtongAppDI
 import model.CardUiModel
+import org.koin.compose.koinInject
 import ui.CardContextMenu
 import ui.CreditCardItem
 import ui.InputPaidAmountDetail
@@ -51,7 +50,7 @@ data class CardDetailScreen(val cardUiModel: CardUiModel) : Screen {
 
     @Composable
     override fun Content() {
-        val cardDetailScreenModel = rememberScreenModel { EtongAppDI.cardDetailScreenModel }
+        val cardDetailScreenModel = koinInject<CardDetailScreenModel>()
         cardDetailScreenModel.observeCardPayment(cardUiModel)
         val state = remember { cardDetailScreenModel.state }
         val navigator = LocalNavigator.currentOrThrow

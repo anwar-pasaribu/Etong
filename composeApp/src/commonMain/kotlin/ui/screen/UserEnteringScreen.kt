@@ -48,13 +48,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import di.EtongAppDI
+import org.koin.compose.koinInject
 import ui.LoadingView
 import ui.UserEnteringScreenModeToggle
 import viewmodel.UserEnteringScreenModel
@@ -67,7 +66,7 @@ data class UserEnteringScreen(var logoutRequested: Boolean = false) : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
 
-        val screenModel = rememberScreenModel { EtongAppDI.userEnteringScreenModel }
+        val screenModel = koinInject<UserEnteringScreenModel> ()
         val state = remember { screenModel.state }
 
         val loginFailed = remember { mutableStateOf(false) }
@@ -188,8 +187,8 @@ data class UserEnteringScreen(var logoutRequested: Boolean = false) : Screen {
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    var userIdentification by remember { mutableStateOf("") }
-                    var userAuthorization by remember { mutableStateOf("") }
+                    var userIdentification by remember { mutableStateOf("asa@mail.com") }
+                    var userAuthorization by remember { mutableStateOf("asa123") }
                     var passwordVisible by rememberSaveable { mutableStateOf(false) }
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -285,11 +284,6 @@ data class UserEnteringScreen(var logoutRequested: Boolean = false) : Screen {
                             }
                         }
                     }
-
-                    /*
-                "asa@mail.com",
-                            "asa123"
-                 */
                 }
             }
         }

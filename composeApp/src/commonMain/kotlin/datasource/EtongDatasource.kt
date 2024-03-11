@@ -1,6 +1,5 @@
 package datasource
 
-import di.EtongAppDI
 import io.ktor.client.HttpClient
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
@@ -11,8 +10,8 @@ import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -68,9 +67,12 @@ class EtongDatasource(
     }
 
     suspend fun tryDeleteCard(card: Card): Unit = withContext(Dispatchers.IO) {
-        realm.writeBlocking {
-            val cardToDelete: Card? = query<Card>("_id == $0", card._id).first().find()
-            cardToDelete?.let { delete(it) }
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(500)
+            realm.writeBlocking {
+                val cardToDelete: Card? = query<Card>("_id == $0", card._id).first().find()
+                cardToDelete?.let { delete(it) }
+            }
         }
     }
 

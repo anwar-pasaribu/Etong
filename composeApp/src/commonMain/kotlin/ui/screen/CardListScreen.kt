@@ -48,7 +48,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.core.screen.uniqueScreenKey
@@ -58,7 +57,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
 import dev.chrisbanes.haze.hazeChild
-import di.EtongAppDI
 import etong.composeapp.generated.resources.Res
 import etong.composeapp.generated.resources.btn_logout
 import etong.composeapp.generated.resources.content_desc_add_card
@@ -67,6 +65,7 @@ import etong.composeapp.generated.resources.label_home
 import etong.composeapp.generated.resources.msg_confirm_logout
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import ui.ConfirmDialog
 import ui.CreditCardItem
 import ui.InputCardDetail
@@ -82,7 +81,7 @@ class CardListScreen : Screen {
     @OptIn(ExperimentalResourceApi::class)
     @Composable
     override fun Content() {
-        val cardScreenModel = rememberScreenModel { EtongAppDI.cardScreenModel }
+        val cardScreenModel = koinInject<CardScreenModel>()
         val state = remember { cardScreenModel.state }
         val openAddCardDialog = remember { mutableStateOf(false) }
         val fabVisible = remember { mutableStateOf(false) }

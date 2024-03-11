@@ -12,9 +12,7 @@ import model.mapper.toDbInstance
 import model.mapper.toUiModel
 import model.storage.Card
 import usecase.AddNewCardToDatabaseUseCase
-import usecase.DeleteCardFromDatabaseUseCase
 import usecase.ObserveCardListUseCase
-import usecase.ReloadRealmDatabaseUseCase
 import usecase.ToggleOnOffSyncUseCase
 import utils.cardutils.CardType
 
@@ -22,8 +20,6 @@ class CardScreenModel(
     private val toggleOnOffSyncUseCase: ToggleOnOffSyncUseCase,
     private val observeCardListUseCase: ObserveCardListUseCase,
     private val addNewCardToDatabaseUseCase: AddNewCardToDatabaseUseCase,
-    private val deleteCardFromDatabaseUseCase: DeleteCardFromDatabaseUseCase,
-    private val reloadRealmDatabaseUseCase: ReloadRealmDatabaseUseCase,
 ) : ScreenModel {
 
     private val viewModelJob = SupervisorJob()
@@ -82,20 +78,6 @@ class CardScreenModel(
                 state.value = MainScreenState.Failure(errorMessage = e.message ?: "Exception")
             }
         }
-    }
-
-    fun removeCard(card: CardUiModel) {
-        screenModelScope.launch {
-            try {
-                deleteCardFromDatabaseUseCase(card.toDbInstance())
-            } catch (e: Exception) {
-                state.value = MainScreenState.Failure(errorMessage = e.message ?: "Exception")
-            }
-        }
-    }
-
-    fun reloadRealm() {
-        loadCardList()
     }
 
     override fun onDispose() {
