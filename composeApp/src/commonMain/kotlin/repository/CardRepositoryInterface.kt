@@ -14,5 +14,4 @@ interface CardRepositoryInterface {
     )
     fun pauseCardSync()
     fun resumeCardSync()
-    suspend fun reloadRealm()
 }

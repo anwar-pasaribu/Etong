@@ -27,9 +27,4 @@ class CardRepository(
     override fun resumeCardSync() {
         etongDatasource.resumeSync()
     }
-
-    override suspend fun reloadRealm() {
-        etongDatasource.reloadRealm()
-    }
-
 }

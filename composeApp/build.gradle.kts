@@ -105,7 +105,6 @@ kotlin {
 
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.screenModel)
-            implementation(libs.voyager.screenModel)
             implementation(libs.voyager.transitions)
 
             // GenAI SDK
