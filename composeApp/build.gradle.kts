@@ -110,8 +110,8 @@ kotlin {
             // GenAI SDK
             implementation(libs.generativeai.google)
 
-            implementation("dev.chrisbanes.haze:haze:0.5.3")
-            implementation("dev.chrisbanes.haze:haze-materials:0.5.3")
+            implementation(libs.haze)
+            implementation(libs.haze.materials)
 
             // File picker
             implementation(libs.calf.filepicker)
