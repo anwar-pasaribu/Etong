@@ -47,7 +47,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
-            binaryOption("bundleId", "com.unwur.etong.shared")
+            binaryOption("bundleId", "com.unwur.etong.composeApp")
         }
     }
 
@@ -137,7 +137,7 @@ android {
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+    sourceSets["main"].resources.srcDirs("src/commonMain/composeResources")
 
     val keyProperties =
         Properties().apply {
