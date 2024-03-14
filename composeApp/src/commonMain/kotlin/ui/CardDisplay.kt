@@ -96,10 +96,18 @@ fun CreditCardItem(
     cardUiModel: CardUiModel,
     onCardClicked: (CardUiModel) -> Unit,
 ) {
-    val gradient = if (isSystemInDarkTheme()) {
+
+    val darkGradient = remember {
         Brush.horizontalGradient(listOf(Color(0xFF004440), Color(0xFF00312e)))
-    } else {
+    }
+    val lightGradient = remember {
         Brush.horizontalGradient(listOf(Color(0xFF28D8A3), Color(0xFF00BEB2)))
+    }
+
+    val gradient = if (isSystemInDarkTheme()) {
+        darkGradient
+    } else {
+        lightGradient
     }
 
     Card(
@@ -114,40 +122,43 @@ fun CreditCardItem(
         colors = CardDefaults.cardColors(containerColor = Color.Transparent),
         shape = MaterialTheme.shapes.medium,
     ) {
-        Box(
-            modifier = Modifier.background(gradient).padding(all = 8.dp).fillMaxSize()
-        ) {
-            Row(
-                modifier = Modifier.height(32.dp).fillMaxWidth().align(Alignment.TopStart),
-                verticalAlignment = Alignment.CenterVertically
+        Box(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier.background(gradient).padding(all = 8.dp).fillMaxSize()
             ) {
-                ImageWrapper(
-                    modifier = Modifier.height(24.dp),
-                    alignment = Alignment.CenterStart,
-                    resource = cardUiModel.cardLogo.resource,
-                    contentScale = ContentScale.FillHeight,
-                    contentDescription = cardUiModel.cardType.name
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(text = cardUiModel.cardLabel)
-            }
-            Row(
-                modifier = Modifier.padding(top = 8.dp).fillMaxWidth().align(Alignment.CenterStart),
-            ) {
-                CurrencyAmountDisplay(
-                    modifier = Modifier.weight(1F),
-                    amount = cardUiModel.billMinAmount
-                )
-                Row(modifier = Modifier.weight(1F), horizontalArrangement = Arrangement.End) {
-                    CurrencyAmountDisplay(
-                        amount = cardUiModel.billAmount
+                Row(
+                    modifier = Modifier.height(32.dp).fillMaxWidth().align(Alignment.TopStart),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ImageWrapper(
+                        modifier = Modifier.height(24.dp),
+                        alignment = Alignment.CenterStart,
+                        resource = cardUiModel.cardLogo.resource,
+                        contentScale = ContentScale.FillHeight,
+                        contentDescription = cardUiModel.cardType.name
                     )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(text = cardUiModel.cardLabel)
                 }
+                Row(
+                    modifier = Modifier.padding(top = 8.dp).fillMaxWidth()
+                        .align(Alignment.CenterStart),
+                ) {
+                    CurrencyAmountDisplay(
+                        modifier = Modifier.weight(1F),
+                        amount = cardUiModel.billMinAmount
+                    )
+                    Row(modifier = Modifier.weight(1F), horizontalArrangement = Arrangement.End) {
+                        CurrencyAmountDisplay(
+                            amount = cardUiModel.billAmount
+                        )
+                    }
+                }
+                DueDateView(
+                    modifier = Modifier.align(Alignment.BottomStart),
+                    billDueDate = cardUiModel.billDueDate
+                )
             }
-            DueDateView(
-                modifier = Modifier.align(Alignment.BottomStart),
-                billDueDate = cardUiModel.billDueDate
-            )
         }
     }
 }
