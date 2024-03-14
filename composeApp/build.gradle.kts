@@ -118,8 +118,6 @@ kotlin {
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
-
-            implementation(libs.koin.test)
         }
 
         commonTest.dependencies {
@@ -127,6 +125,11 @@ kotlin {
 
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
+        }
+
+        val desktopTest by getting
+        desktopTest.dependencies {
+            implementation(compose.desktop.currentOs)
         }
     }
 }
