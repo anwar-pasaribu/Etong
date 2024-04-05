@@ -31,6 +31,7 @@ import service.GenerativeAiService
 import ui.component.BackButton
 import ui.component.ChatBubbleItem
 import ui.component.MessageInput
+import viewmodel.ChatViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 class ChatScreen : Screen {

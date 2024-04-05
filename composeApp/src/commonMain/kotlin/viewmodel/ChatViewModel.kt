@@ -1,4 +1,4 @@
-package ui.screen
+package viewmodel
 
 import dev.shreyaspatil.ai.client.generativeai.type.content
 import kotlinx.coroutines.Dispatchers

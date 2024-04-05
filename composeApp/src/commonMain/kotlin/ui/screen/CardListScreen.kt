@@ -96,7 +96,10 @@ class CardListScreen : Screen {
                 TopAppBar(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .hazeChild(state = hazeState, style = HazeMaterials.thin(MaterialTheme.colorScheme.background)),
+                        .hazeChild(
+                            state = hazeState,
+                            style = HazeMaterials.thin(MaterialTheme.colorScheme.background)
+                        ),
                     colors = TopAppBarDefaults.topAppBarColors(Color.Transparent),
                     title = { Text(stringResource(Res.string.label_home)) },
                     actions = {
@@ -135,7 +138,8 @@ class CardListScreen : Screen {
                     exit = scaleOut(),
                 ) {
                     FloatingActionButton(
-                        modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
+                        modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars)
+                            .size(64.dp),
                         shape = CircleShape,
                         onClick = { openAddCardDialog.value = true },
                         content = {
