@@ -8,8 +8,7 @@ jobs:
       - image: cimg/android:2024.01
     filters:
       branches:
-        only:
-          - main
+        only: main
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
