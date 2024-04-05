@@ -1,15 +1,16 @@
 package ui
 
-import ui.component.InputNumber
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -35,6 +36,7 @@ import kotlinx.datetime.toLocalDateTime
 import model.CardLogo
 import model.CardUiModel
 import ui.component.BackButton
+import ui.component.InputNumber
 import utils.cardutils.CardType
 
 @Composable
@@ -73,7 +75,7 @@ fun InputCardDetail(
 
                     Row (verticalAlignment = Alignment.CenterVertically) {
                         DropdownCardTypeSection(
-                            modifier = Modifier.width(56.dp).padding(end = 8.dp),
+                            modifier = Modifier.wrapContentWidth().defaultMinSize(minWidth = 64.dp).padding(end = 8.dp),
                             onItemSelected = {
                                 cardTypeString = it
                             }

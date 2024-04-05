@@ -9,10 +9,13 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -27,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -75,7 +79,7 @@ fun DropdownCardTypeSection(
                     keyboardController?.hide()
                     expanded = true
                 }
-                .fillMaxWidth()
+                .wrapContentWidth()
                 .background(
                     MaterialTheme.colorScheme.onPrimary,
                     MaterialTheme.shapes.small
@@ -84,23 +88,31 @@ fun DropdownCardTypeSection(
         ),
         contentAlignment = Alignment.Center
     ) {
-        val updatedItem = cardsV2[selectedIndex]
-        val icon = updatedItem.third
-        AnimatedContent(
-            targetState = icon,
-            transitionSpec = {
-                EnterTransition.None togetherWith ExitTransition.None
+        Row(modifier = Modifier.wrapContentWidth(), verticalAlignment = Alignment.CenterVertically) {
+            val updatedItem = cardsV2[selectedIndex]
+            val icon = updatedItem.third
+            AnimatedContent(
+                targetState = icon,
+                transitionSpec = {
+                    EnterTransition.None togetherWith ExitTransition.None
+                }
+            ) { updatedValue ->
+                ImageWrapper(
+                    modifier = Modifier.size(width = 32.dp, height = 24.dp).animateEnterExit(
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ),
+                    alignment = Alignment.CenterStart,
+                    resource = updatedValue,
+                    contentScale = ContentScale.Fit,
+                    contentDescription = ""
+                )
             }
-        ) { updatedValue ->
-            ImageWrapper(
-                modifier = Modifier.size(width = 32.dp, height = 24.dp).animateEnterExit(
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ),
-                alignment = Alignment.CenterStart,
-                resource = updatedValue,
-                contentScale = ContentScale.Fit,
-                contentDescription = ""
+            Icon(
+                modifier = Modifier.size(24.dp),
+                imageVector = Icons.Filled.ArrowDropDown,
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = "Select card ype"
             )
         }
 
