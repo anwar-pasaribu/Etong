@@ -46,15 +46,15 @@ jobs:
           name: Test Composable Component `./gradlew desktopTest`
           command: ./gradlew desktopTest
 
-#      - run:
-#          name: Install Fastlane
-#          command: sudo gem install fastlane
+      - run:
+          name: Install Fastlane
+          command: sudo gem install fastlane
 #      - run:
 #          name: Uploading an AAB to Firebase App Distribution
 #          command: fastlane distribute
-#      - run:
-#          name: Uploading an AAB to Playstore (Internal)
-#          command: fastlane internal_playstore
+      - run:
+          name: Uploading an AAB to Playstore (Production)
+          command: fastlane playstore
 
 workflows:
   version: 2
