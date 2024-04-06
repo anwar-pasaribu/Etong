@@ -42,7 +42,17 @@ platform :android do
       build_type: 'Release'
     )
     # upload_to_play_store # Uploads the AAB built in the gradle step above
-    upload_to_play_store
+    upload_to_play_store(
+          track: 'production', # production, beta, alpha, internal
+          release_status: 'completed',
+          aab: 'composeApp/build/outputs/bundle/release/composeApp-release.aab',
+          skip_upload_apk: true,
+          skip_upload_metadata: true,
+          skip_upload_changelogs: true,
+          skip_upload_images: true,
+          skip_upload_screenshots: true,
+          timeout: 600
+    )
   end
 
   lane :internal_playstore do

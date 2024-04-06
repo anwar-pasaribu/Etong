@@ -163,8 +163,8 @@ android {
         applicationId = "com.unwur.etong"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 131
-        versionName = "1.3.1"
+        versionCode = 133
+        versionName = "1.3.3"
 
         ndk {
             abiFilters.add("armeabi-v7a")
