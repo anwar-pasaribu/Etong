@@ -187,8 +187,8 @@ data class UserEnteringScreen(var logoutRequested: Boolean = false) : Screen {
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    var userIdentification by remember { mutableStateOf("asa@mail.com") }
-                    var userAuthorization by remember { mutableStateOf("asa123") }
+                    var userIdentification by remember { mutableStateOf("") }
+                    var userAuthorization by remember { mutableStateOf("") }
                     var passwordVisible by rememberSaveable { mutableStateOf(false) }
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
